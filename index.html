@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        h1 {
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+            background-color: #000;
+        }
+        
+        .video-container {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .controls {
+            margin: 15px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Story Progress Bar */
+        .story-progress {
+            display: flex;
+            width: 100%;
+            height: 2px;
+            position: fixed;
+            top: 4px;
+            left: 0;
+            z-index: 10;
+            padding: 0 2px;
+            background-color: transparent;
+            gap: 2px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin: 0 4px;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: none;
+        }
+
+        .story-container {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        
+        .story {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1;
+            display: none;
+        }
+        
+        .story.active {
+            opacity: 1;
+            z-index: 2;
+            display: block;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(222, 71, 16, 0.85);
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 18px;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            animation: jumpAnimation 1.5s ease-in-out infinite;
+            border: none;
+            outline: none;
+        }
+        
+        @keyframes jumpAnimation {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+            
+            h1 {
+                font-size: 1.2rem;
+                padding: 5px;
+                display: none; /* Hide header on mobile */
+            }
+            
+            .video-container {
+                height: 100vh; /* to cover full screen */
+                width: 100vw;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                background-color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            
+            video {
+                width: 100vw;
+                height: 100vh;
+                object-fit: fill; /* contain */
+                background-color: #000;
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .controls {
+                display: none; /* Hide controls message on mobile */
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                color: white;
+                padding: 10px 0;
+                z-index: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- <h1>Simple Video Player</h1> -->
+    
+    <div class="story-progress">
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress1"></div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress2"></div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress3"></div>
+        </div>
+    </div>
+
+    <div class="story-container">
+        <div class="story active" id="story1">
+            <div class="video-container">
+                <!-- Video element -->
+                <video id="video1" preload="auto" muted playsinline>
+                    <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/Blood%20Pressure_1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button class="cta-button">Learn More</button>
+            </div>
+        </div>
+        
+        <div class="story" id="story2">
+            <div class="video-container">
+                <!-- Video element -->
+                <video id="video2" preload="auto" muted playsinline>
+                    <!-- Replace with your second video URL -->
+                    <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/Blood%20Pressure_2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button class="cta-button">Learn More</button>
+            </div>
+        </div>
+        
+        <div class="story" id="story3">
+            <div class="video-container">
+                <!-- Video element -->
+                <video id="video3" preload="auto" muted playsinline>
+                    <!-- Replace with your third video URL -->
+                    <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/Blood%20Pressure_3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button class="cta-button">Learn More</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div class="controls">
+        <p>Enter your video URL in the source tag where it says "YOUR_VIDEO_URL_HERE"</p>
+    </div> -->
+
+    <script>
+        // Story functionality
+        const stories = document.querySelectorAll('.story');
+        const videos = document.querySelectorAll('video');
+        const progressBars = [
+            document.getElementById('progress1'),
+            document.getElementById('progress2'),
+            document.getElementById('progress3')
+        ];
+        
+        // Destination URL for all redirects
+        // const destinationURL = "https://www.mybpfix.com/video_drugs_stk_prod_dr_nhc_mon?affId=roi&c1=w9rlupajqi0kr94a3mujfies&sid=Perform%20Media&utm_medium=cpc&utm_source=roi&utm_campaign=Perform%20Media&utm_content=Perform%20Media&utm_term=Perform%20Media&txid=";
+        const destinationURL = "file:///Users/tizil.s/test/serp/index.html";
+        
+        let currentStory = 0;
+        let animationFrameIds = Array(videos.length).fill(null);
+
+        
+        // Initialize - mark all progress bars as empty
+        progressBars.forEach(bar => {
+            bar.style.width = '0%';
+            bar.style.transition = 'width 0.1s linear';
+        });
+        
+        // Start the first video
+        stories[0].classList.add('active');
+        videos[0].play();
+        
+        // Update current progress bar based on video time
+        function updateCurrentProgressBar() {
+            const video = videos[currentStory];
+            const progress = progressBars[currentStory];
+            const percent = (video.currentTime / video.duration) * 100;
+            progress.style.width = `${percent}%`;
+        }
+        
+        // Go to the next story
+        function goToNextStory() {
+            // Mark current progress bar as complete
+            progressBars[currentStory].style.width = '100%';
+            
+            // Hide current story
+            stories[currentStory].classList.remove('active');
+            videos[currentStory].pause();
+            
+            // Move to next story
+            currentStory++;
+            
+            // If we've seen all stories, redirect to destination
+            if (currentStory >= stories.length) {
+                window.location.href = destinationURL;
+                // resetAllStories();
+                return;
+            }
+            
+            // Show new current story
+            stories[currentStory].classList.add('active');
+            videos[currentStory].currentTime = 0;
+            videos[currentStory].play();
+        }
+        
+        // Go to the previous story
+        function goToPreviousStory() {
+            if (currentStory <= 0) return;
+
+            // Pause and hide current video/story
+            stories[currentStory].classList.remove('active');
+            videos[currentStory].pause();
+
+            // Instantly reset progress bar width without animation
+            const bar = progressBars[currentStory];
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+
+            // Force a reflow to flush the style changes
+            bar.offsetHeight; // This triggers reflow
+
+            // Restore smooth transition
+            bar.style.transition = 'none';
+
+            // Go to previous story
+            currentStory--;
+            stories[currentStory].classList.add('active');
+            videos[currentStory].currentTime = 0;
+            videos[currentStory].play();
+        }
+
+        
+        // Reset all stories to start from beginning
+        function resetAllStories() {
+            // Reset counter
+            currentStory = 0;
+
+            // Pause all videos and hide all stories
+            videos.forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+            stories.forEach(story => story.classList.remove('active'));
+
+            // Reset all progress bars instantly with no animation
+            progressBars.forEach(bar => {
+                bar.style.transition = 'none';     // Disable transition
+                bar.style.width = '0%';            // Instantly reset width
+                bar.offsetHeight;                  // Force reflow to flush the change
+                bar.style.transition = '';  // Re-enable transition
+            });
+
+            // Activate first story
+            stories[0].classList.add('active');
+            videos[0].play();  // This will trigger the animateProgressBar() via 'play' event
+        }
+
+
+        function animateProgressBar(video, progressBar, index) {
+            function step() {
+                if (index !== currentStory) return; // Stop if user navigated away
+
+                const percent = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${percent}%`;
+                requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        videos.forEach((video, index) => {
+            video.addEventListener('play', () => {
+                animateProgressBar(video, progressBars[index], index);
+            });
+
+            video.addEventListener('ended', () => {
+                goToNextStory();
+            });
+        });
+
+
+        // Touch/click navigation
+        document.addEventListener('click', (e) => {
+            // Skip if the click was on the CTA button
+            if (e.target.classList.contains('cta-button')) {
+                e.stopPropagation();
+                window.location.href = destinationURL;
+                // alert('Learn More clicked!');
+                return;
+            }
+            
+            const width = window.innerWidth;
+            const clickX = e.clientX;
+            
+            // Right side: next story
+            if (clickX > width * 0.5) {
+                goToNextStory();
+            } 
+            // Left side: previous story
+            else {
+                goToPreviousStory();
+            }
+        });
+        
+        // Add swipe functionality
+        let touchstartX = 0;
+        let touchendX = 0;
+        let touchstartY = 0;
+        let touchendY = 0;
+        // let touchTimeout = null;                                                // hold to pause video
+        
+        function handleSwipe() {
+            const horizontalSwipeThreshold = 50; // minimum distance for horizontal swipe
+            const verticalSwipeThreshold = 50;   // minimum distance for vertical swipe
+            
+            // Calculate horizontal and vertical distance
+            const horizontalDistance = touchendX - touchstartX;
+            const verticalDistance = touchendY - touchstartY;
+            
+            // Check if the swipe is more horizontal or vertical
+            if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+                // Horizontal swipe
+                if (horizontalDistance < -horizontalSwipeThreshold) {
+                    // Swiped left - go to destination URL
+                    window.location.href = destinationURL;
+                } else if (horizontalDistance > horizontalSwipeThreshold) {
+                    // Swiped right - go to previous
+                    goToPreviousStory();
+                }
+            } else {
+                // Vertical swipe
+                if (verticalDistance < -verticalSwipeThreshold) {
+                    // Swiped up - go to destination URL
+                    window.location.href = destinationURL;
+                }
+                // We don't handle swipe down in this case
+            }
+        }
+        
+        // // Pause video on touch/mouse hold                                                // hold to pause video
+        // function pauseVideoOnHold() {
+        //     // Clear any existing timeout to prevent multiple pauses
+        //     if (touchTimeout) clearTimeout(touchTimeout);
+            
+        //     // Set a small timeout to differentiate between tap and hold
+        //     touchTimeout = setTimeout(() => {
+        //         const currentVideo = videos[currentStory];
+        //         if (!currentVideo.paused) {
+        //             currentVideo.pause();
+        //         }
+        //     }, 200); // 200ms delay to detect a hold
+        // }
+        
+        // // Resume video on release if it was paused
+        // function resumeVideoOnRelease() {
+        //     // Clear the timeout in case the hold was too short
+        //     if (touchTimeout) {
+        //         clearTimeout(touchTimeout);
+        //         touchTimeout = null;
+        //     }
+            
+        //     const currentVideo = videos[currentStory];
+        //     if (currentVideo.paused) {
+        //         currentVideo.play();
+        //     }
+        // }
+        
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+            touchstartY = e.changedTouches[0].screenY;
+            // pauseVideoOnHold();                                                // hold to pause video
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            touchendY = e.changedTouches[0].screenY;
+            // resumeVideoOnRelease();                                                // hold to pause video
+            handleSwipe();
+        });
+        
+        // // Also add mouse events for desktop                                                // hold to pause video
+        // document.addEventListener('mousedown', e => {
+        //     // Skip if the click was on the CTA button
+        //     if (e.target.classList.contains('cta-button')) return;
+        //     pauseVideoOnHold();
+        // });
+        
+        // document.addEventListener('mouseup', e => {
+        //     // Skip if the click was on the CTA button
+        //     if (e.target.classList.contains('cta-button')) return;
+        //     resumeVideoOnRelease();
+        // });
+
+    </script>
+</body>
+</html> 
