@@ -99,12 +99,12 @@
         /* CTA Button */
         .cta-button {
             position: absolute;
-            bottom: 120px; /* Changed from 60px to 120px to increase distance from bottom */
+            bottom: 5%; /* Percentage-based positioning */
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 30px;
             font-size: 16px;
-            z-index: 100; /* Increased z-index for better visibility */
+            z-index: 100;
             background-color: rgba(222, 68, 16, 0.85);
             color: rgb(255, 255, 255);
             font-weight: bold;
@@ -114,6 +114,24 @@
             animation: jumpAnimation 1.5s ease-in-out infinite;
             border: none;
             outline: none;
+            /* Responsive font size */
+            font-size: clamp(14px, 3vw, 18px);
+            /* Responsive padding */
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 35px);
+        }
+
+        @media (max-height: 600px) {
+            .cta-button {
+                bottom: 20px; /* Fixed distance for smaller height screens */
+                padding: 8px 20px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (min-height: 800px) {
+            .cta-button {
+                bottom: 8%; /* More space on taller screens */
+            }
         }
 
         /* Final Screen with Heartbeat Effect */
@@ -368,6 +386,9 @@
             let vh = window.innerHeight * 0.01;
             // Then we set the value in the --vh custom property to the root of the document
             document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+            // Also adjust CTA button positions when viewport changes
+            adjustCTAButtonPositions();
         }
 
         // Call the function to set the height initially
@@ -376,6 +397,42 @@
         // Call the function on resize and orientation change
         window.addEventListener('resize', fixViewportHeight);
         window.addEventListener('orientationchange', fixViewportHeight);
+
+        // Function to dynamically adjust CTA button positions
+        function adjustCTAButtonPositions() {
+            const videoContainers = document.querySelectorAll('.video-container');
+            const ctaButtons = document.querySelectorAll('.cta-button');
+            
+            videoContainers.forEach((container, index) => {
+                if (ctaButtons[index]) {
+                    // Get the actual visible height of the video
+                    const video = container.querySelector('video');
+                    if (video) {
+                        const videoRect = video.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+                        
+                        // Calculate safe zone for button (within the visible video area)
+                        const videoVisibleHeight = videoRect.height;
+                        const bottomPosition = Math.min(
+                            videoVisibleHeight * 0.1, // 10% of video height
+                            30 // but not more than 30px from bottom
+                        );
+                        
+                        // Apply calculated position
+                        ctaButtons[index].style.bottom = `${bottomPosition}px`;
+                    }
+                }
+            });
+        }
+
+        // Initial adjustment
+        window.addEventListener('load', adjustCTAButtonPositions);
+        
+        // Also adjust when video dimensions might change
+        document.querySelectorAll('video').forEach(video => {
+            video.addEventListener('loadedmetadata', adjustCTAButtonPositions);
+            video.addEventListener('play', adjustCTAButtonPositions);
+        });
 
         // Story functionality
         const stories = document.querySelectorAll('.story');
