@@ -99,16 +99,16 @@
         /* CTA Button */
         .cta-button {
             position: absolute;
-            bottom: 10px;
+            bottom: 60px; /* Increased from 10px to ensure visibility */
             left: 50%;
             transform: translateX(-50%);
+            padding: 12px 30px;
+            font-size: 16px;
+            z-index: 100; /* Increased z-index for better visibility */
             background-color: rgba(222, 68, 16, 0.85);
             color: rgb(255, 255, 255);
             font-weight: bold;
-            padding: 15px 35px;
             border-radius: 30px;
-            font-size: 18px;
-            z-index: 20;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             cursor: pointer;
             animation: jumpAnimation 1.5s ease-in-out infinite;
@@ -230,152 +230,6 @@
                 box-shadow: 0 8px 20px rgba(222, 68, 16, 0.5);
             }
         }
-
-        /* Desktop Ad View */
-        .desktop-ad-container {
-            display: none;
-        }
-
-        @media (min-width: 769px) {
-            body {
-                background-color: #fff;
-                color: #000;
-                overflow-y: auto;
-            }
-
-            .story-container, .story-progress, .final-screen {
-                display: none;
-            }
-
-            .desktop-ad-container {
-                display: block;
-                width: 100%;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-
-            .ad-banner {
-                display: flex;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                overflow: hidden;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                cursor: pointer;
-            }
-
-            .ad-image {
-                width: 350px;
-                background-color: #ff0000;
-                position: relative;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                cursor: pointer;
-            }
-
-            .ad-image img {
-                max-width: 100%;
-                height: auto;
-                position: absolute;
-                right: -40px;
-                top: 0;
-                z-index: 1;
-                cursor: pointer;
-            }
-
-            .blood-pressure-text {
-                position: relative;
-                z-index: 2;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: center;
-                padding: 20px;
-                text-align: left;
-                cursor: pointer;
-            }
-
-            .how-to {
-                background-color: #ffd700;
-                padding: 5px 10px;
-                font-weight: bold;
-                font-size: 24px;
-                transform: rotate(-2deg);
-                margin-bottom: 10px;
-            }
-
-            .reduce {
-                background-color: #ffd700;
-                padding: 5px 10px;
-                font-weight: bold;
-                font-size: 24px;
-                transform: rotate(-2deg);
-                margin-bottom: 10px;
-            }
-
-            .blood-pressure {
-                font-size: 36px;
-                font-weight: bold;
-                line-height: 1;
-                color: #000;
-            }
-
-            .ad-content {
-                flex: 1;
-                padding: 20px 30px;
-                text-align: left;
-                cursor: pointer;
-            }
-
-            .ad-domain {
-                color: #0066cc;
-                font-size: 14px;
-                margin-bottom: 10px;
-                cursor: pointer;
-            }
-
-            .ad-title {
-                font-size: 28px;
-                font-weight: bold;
-                color: #000;
-                margin-bottom: 15px;
-                line-height: 1.2;
-                cursor: pointer;
-            }
-
-            .ad-description {
-                font-size: 16px;
-                color: #666;
-                margin-bottom: 15px;
-                cursor: pointer;
-            }
-
-            .next-button {
-                display: block;
-                width: 100%;
-                background-color: #1a73e8;
-                color: white;
-                font-size: 18px;
-                padding: 15px;
-                text-align: center;
-                border: none;
-                border-radius: 4px;
-                margin-top: 20px;
-                cursor: pointer;
-                position: relative;
-            }
-
-            .next-button:after {
-                content: '→';
-                position: absolute;
-                right: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 24px;
-            }
-        }
         
         @keyframes jumpAnimation {
             0%, 100% {
@@ -430,17 +284,6 @@
                 padding: 0;
             }
             
-            /* Adjust CTA button positioning for better visibility on mobile */
-            .cta-button {
-                position: absolute;
-                bottom: 60px; /* Increased from 10px to ensure visibility */
-                left: 50%;
-                transform: translateX(-50%);
-                padding: 12px 30px;
-                font-size: 16px;
-                z-index: 100; /* Increased z-index for better visibility */
-            }
-            
             .controls {
                 display: none; /* Hide controls message on mobile */
                 position: fixed;
@@ -455,30 +298,7 @@
     </style>
 </head>
 <body>
-    <!-- Desktop Ad View -->
-    <div class="desktop-ad-container">
-        <div class="ad-banner" onclick="window.location.href=destinationURL">
-            <div class="ad-image" onclick="window.location.href=destinationURL; event.stopPropagation();">
-                <div class="blood-pressure-text" onclick="window.location.href=destinationURL; event.stopPropagation();">
-                    <div class="how-to">HOW TO</div>
-                    <div class="reduce">REDUCE</div>
-                    <div class="blood-pressure">BLOOD<br>PRESSURE</div>
-                </div>
-                <img src="https://placehold.co/300x400/ff0000/ffffff?text=Doctor" alt="Doctor" onclick="window.location.href=destinationURL; event.stopPropagation();">
-            </div>
-            <div class="ad-content" onclick="window.location.href=destinationURL; event.stopPropagation();">
-                <div class="ad-domain" onclick="window.location.href=destinationURL; event.stopPropagation();">simplebloodpressurefix.com</div>
-                <h2 class="ad-title" onclick="window.location.href=destinationURL; event.stopPropagation();">The Natural Hypertension Solution No One Is Talking About - A New Way to Control High Blood Pressure</h2>
-                <p class="ad-description" onclick="window.location.href=destinationURL; event.stopPropagation();">This safe, natural solution doesn't just treat hypertension but actually corrects it. Learn more today!</p>
-            </div>
-        </div>
-        <button class="next-button" onclick="window.location.href=destinationURL">NEXT</button>
-        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #666; cursor: pointer;" onclick="window.location.href=destinationURL">
-            Do Not Sell or Share My Personal Information
-        </div>
-    </div>
-
-    <!-- Mobile Story View - Unchanged -->
+    <!-- Mobile Story View -->
     <div class="story-progress">
         <div class="progress-bar">
             <div class="progress-bar-fill" id="progress1"></div>
@@ -496,7 +316,6 @@
             <div class="video-container">
                 <!-- Video element -->
                 <video id="video1" preload="auto" muted playsinline>
-                    <!-- <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/Blood%20Pressure_1.mp4" type="video/mp4"> -->
                     <source src="https://staticvideoshost.online/Blood%20Pressure_1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -508,11 +327,10 @@
             <div class="video-container">
                 <!-- Video element -->
                 <video id="video2" preload="auto" muted playsinline>
-                    <!-- Replace with your second video URL -->
                     <source src="https://staticvideoshost.online/Blood%20Pressure_2.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button class="cta-button">Swipe →</button>
+                <button class="cta-button">Learn More</button>
             </div>
         </div>
         
@@ -520,7 +338,6 @@
             <div class="video-container">
                 <!-- Video element -->
                 <video id="video3" preload="auto" muted playsinline>
-                    <!-- Replace with your third video URL -->
                     <source src="https://staticvideoshost.online/Blood%20Pressure_5.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -532,21 +349,17 @@
     <!-- Final Screen with Heartbeat Effect -->
     <div class="final-screen" id="finalScreen">
         <div class="final-content">
-            <div class="final-title" onclick="window.location.href=destinationURL">
-                The Natural Hypertension Solution No One Is Talking About - A New Way to Control High Blood Pressure
+            <div class="final-title">
+                Hello, I'm Dr. Marlene Merritt
             </div>
-            <div class="final-description" onclick="window.location.href=destinationURL">
-                This safe, natural solution doesn't just treat hypertension but actually corrects it.
+            <div class="final-description">
+                Finally, the truth is coming out…
             </div>
             <button class="final-cta-button" onclick="window.location.href=destinationURL">
-                Find Solution Now
+                Find Solution Now → 
             </button>
         </div>
     </div>
-    
-    <!-- <div class="controls">
-        <p>Enter your video URL in the source tag where it says "YOUR_VIDEO_URL_HERE"</p>
-    </div> -->
 
     <script>
         // Fix for iOS viewport height issues
@@ -603,7 +416,6 @@
         
         // Destination URL for all redirects
         const destinationURL = "https://www.mybpfix.com/video_drugs_stk_prod_dr_nhc_mon?affId=roi&c1=w9rlupajqi0kr94a3mujfies&sid=Perform%20Media&utm_medium=cpc&utm_source=roi&utm_campaign=Perform%20Media&utm_content=Perform%20Media&utm_term=Perform%20Media&txid=";
-        //const destinationURL = "file:///Users/tizil.s/test/serp/index_new.html";
         
         let currentStory = 0;
         let animationFrameIds = Array(videos.length).fill(null);
@@ -766,19 +578,25 @@
         document.addEventListener('click', (e) => {
             // Skip if the click was on any CTA button
             if (e.target.classList.contains('cta-button') || 
-                e.target.classList.contains('final-cta-button') ||
-                e.target.classList.contains('final-title') ||
-                e.target.classList.contains('final-description')) {
+                e.target.classList.contains('final-cta-button')) {
                 e.stopPropagation();
                 window.location.href = destinationURL;
                 return;
             }
             
-            // If final screen is showing, clicking anywhere else should do nothing
+            // If final screen is showing, clicking anywhere should redirect to destination URL
+            // EXCEPT on the title or description text
             if (finalScreen.classList.contains('active')) {
+                // Don't redirect if clicking on title or description text
+                if (e.target.classList.contains('final-title') || 
+                    e.target.classList.contains('final-description')) {
+                    return;
+                }
+                window.location.href = destinationURL;
                 return;
             }
             
+            // During videos, allow only navigation between stories
             const width = window.innerWidth;
             const clickX = e.clientX;
             
@@ -799,12 +617,6 @@
         let touchendY = 0;
         
         function handleSwipe() {
-            // If final screen is showing, any swipe should redirect
-            if (finalScreen.classList.contains('active')) {
-                window.location.href = destinationURL;
-                return;
-            }
-            
             const horizontalSwipeThreshold = 50; // minimum distance for horizontal swipe
             const verticalSwipeThreshold = 50;   // minimum distance for vertical swipe
             
@@ -812,24 +624,31 @@
             const horizontalDistance = touchendX - touchstartX;
             const verticalDistance = touchendY - touchstartY;
             
-            // Check if the swipe is more horizontal or vertical
-            if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
-                // Horizontal swipe
-                if (horizontalDistance < -horizontalSwipeThreshold) {
-                    // Swiped left - go to destination URL
-                    window.location.href = destinationURL;
-                } else if (horizontalDistance > horizontalSwipeThreshold) {
-                    // Swiped right - go to previous
-                    goToPreviousStory();
-                }
-            } else {
-                // Vertical swipe
-                if (verticalDistance < -verticalSwipeThreshold) {
-                    // Swiped up - go to destination URL
-                    window.location.href = destinationURL;
-                }
-                // We don't handle swipe down in this case
+            // Swipe up should always go to destination URL (on any video or final screen)
+            if (verticalDistance < -verticalSwipeThreshold) {
+                window.location.href = destinationURL;
+                return;
             }
+            
+            // If final screen is showing, allow additional actions
+            if (finalScreen.classList.contains('active')) {
+                // Swipe left to go to URL on final screen
+                if (horizontalDistance < -horizontalSwipeThreshold) {
+                    window.location.href = destinationURL;
+                    return;
+                }
+                
+                // No other actions (swipe right or down) on final screen
+                return;
+            }
+            
+            // During videos, only handle swipe right for navigation
+            // Only allow swipe right to go to previous story
+            if (horizontalDistance > horizontalSwipeThreshold) {
+                goToPreviousStory();
+            }
+            
+            // No other swipe actions during videos
         }
         
         // Pause video on touch/mouse hold
@@ -868,8 +687,12 @@
         document.addEventListener('touchstart', e => {
             // Skip if touch is on CTA button
             if (e.target.classList.contains('cta-button') || 
-                e.target.classList.contains('final-cta-button') ||
-                e.target.classList.contains('final-title') ||
+                e.target.classList.contains('final-cta-button')) {
+                return;
+            }
+            
+            // Skip touch tracking on final screen text elements
+            if (e.target.classList.contains('final-title') || 
                 e.target.classList.contains('final-description')) {
                 return;
             }
@@ -882,8 +705,12 @@
         document.addEventListener('touchend', e => {
             // Skip if touch is on CTA button
             if (e.target.classList.contains('cta-button') || 
-                e.target.classList.contains('final-cta-button') ||
-                e.target.classList.contains('final-title') ||
+                e.target.classList.contains('final-cta-button')) {
+                return;
+            }
+            
+            // Skip touch tracking on final screen text elements
+            if (e.target.classList.contains('final-title') || 
                 e.target.classList.contains('final-description')) {
                 return;
             }
