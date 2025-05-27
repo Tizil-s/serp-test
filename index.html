@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -102,7 +101,7 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(222, 71, 16, 0.85);
+            background-color: rgba(222, 68, 16, 0.85);
             color: rgb(255, 255, 255);
             font-weight: bold;
             padding: 15px 35px;
@@ -114,6 +113,266 @@
             animation: jumpAnimation 1.5s ease-in-out infinite;
             border: none;
             outline: none;
+        }
+
+        /* Final Screen with Heartbeat Effect */
+        .final-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.4) 0%, 
+                rgba(0, 0, 0, 0.5) 25%,
+                rgba(0, 0, 0, 0.7) 50%,
+                rgba(0, 0, 0, 0.8) 75%,
+                rgba(0, 0, 0, 0.9) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 25;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            animation: heartbeatBg 1.5s infinite;
+            pointer-events: none;
+        }
+
+        /* Heartbeat animation for background */
+        @keyframes heartbeatBg {
+            0%, 100% {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            50% {
+                backdrop-filter: blur(9px);
+                -webkit-backdrop-filter: blur(9px);
+            }
+            75% {
+                backdrop-filter: blur(9.5px);
+                -webkit-backdrop-filter: blur(9.5px);
+            }
+        }
+
+        .final-screen.active {
+            opacity: 1;
+            z-index: 25;
+            pointer-events: auto;
+        }
+
+        .final-content {
+            max-width: 80%;
+            padding: 0;
+            animation: heartbeatScale 1.5s infinite;
+        }
+
+        /* Heartbeat scale animation for content */
+        @keyframes heartbeatScale {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+            75% {
+                transform: scale(1.01);
+            }
+        }
+
+        .final-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+            line-height: 1.2;
+            cursor: pointer;
+        }
+
+        .final-description {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .final-cta-button {
+            background-color: rgba(222, 68, 16, 0.85);
+            color: white;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin-top: 20px;
+            animation: ctaPulse 2s infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(222, 68, 16, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(222, 68, 16, 0.5);
+            }
+        }
+
+        /* Desktop Ad View */
+        .desktop-ad-container {
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            body {
+                background-color: #fff;
+                color: #000;
+                overflow-y: auto;
+            }
+
+            .story-container, .story-progress, .final-screen {
+                display: none;
+            }
+
+            .desktop-ad-container {
+                display: block;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .ad-banner {
+                display: flex;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                cursor: pointer;
+            }
+
+            .ad-image {
+                width: 350px;
+                background-color: #ff0000;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+            }
+
+            .ad-image img {
+                max-width: 100%;
+                height: auto;
+                position: absolute;
+                right: -40px;
+                top: 0;
+                z-index: 1;
+                cursor: pointer;
+            }
+
+            .blood-pressure-text {
+                position: relative;
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding: 20px;
+                text-align: left;
+                cursor: pointer;
+            }
+
+            .how-to {
+                background-color: #ffd700;
+                padding: 5px 10px;
+                font-weight: bold;
+                font-size: 24px;
+                transform: rotate(-2deg);
+                margin-bottom: 10px;
+            }
+
+            .reduce {
+                background-color: #ffd700;
+                padding: 5px 10px;
+                font-weight: bold;
+                font-size: 24px;
+                transform: rotate(-2deg);
+                margin-bottom: 10px;
+            }
+
+            .blood-pressure {
+                font-size: 36px;
+                font-weight: bold;
+                line-height: 1;
+                color: #000;
+            }
+
+            .ad-content {
+                flex: 1;
+                padding: 20px 30px;
+                text-align: left;
+                cursor: pointer;
+            }
+
+            .ad-domain {
+                color: #0066cc;
+                font-size: 14px;
+                margin-bottom: 10px;
+                cursor: pointer;
+            }
+
+            .ad-title {
+                font-size: 28px;
+                font-weight: bold;
+                color: #000;
+                margin-bottom: 15px;
+                line-height: 1.2;
+                cursor: pointer;
+            }
+
+            .ad-description {
+                font-size: 16px;
+                color: #666;
+                margin-bottom: 15px;
+                cursor: pointer;
+            }
+
+            .next-button {
+                display: block;
+                width: 100%;
+                background-color: #1a73e8;
+                color: white;
+                font-size: 18px;
+                padding: 15px;
+                text-align: center;
+                border: none;
+                border-radius: 4px;
+                margin-top: 20px;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .next-button:after {
+                content: '→';
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 24px;
+            }
         }
         
         @keyframes jumpAnimation {
@@ -157,7 +416,7 @@
             video {
                 width: 100vw;
                 height: 100vh;
-                object-fit: fill; /* contain */
+                object-fit: contain; /* contain */
                 background-color: #000;
                 position: relative;
                 top: 0;
@@ -180,8 +439,30 @@
     </style>
 </head>
 <body>
-    <!-- <h1>Simple Video Player</h1> -->
-    
+    <!-- Desktop Ad View -->
+    <div class="desktop-ad-container">
+        <div class="ad-banner" onclick="window.location.href=destinationURL">
+            <div class="ad-image" onclick="window.location.href=destinationURL; event.stopPropagation();">
+                <div class="blood-pressure-text" onclick="window.location.href=destinationURL; event.stopPropagation();">
+                    <div class="how-to">HOW TO</div>
+                    <div class="reduce">REDUCE</div>
+                    <div class="blood-pressure">BLOOD<br>PRESSURE</div>
+                </div>
+                <img src="https://placehold.co/300x400/ff0000/ffffff?text=Doctor" alt="Doctor" onclick="window.location.href=destinationURL; event.stopPropagation();">
+            </div>
+            <div class="ad-content" onclick="window.location.href=destinationURL; event.stopPropagation();">
+                <div class="ad-domain" onclick="window.location.href=destinationURL; event.stopPropagation();">simplebloodpressurefix.com</div>
+                <h2 class="ad-title" onclick="window.location.href=destinationURL; event.stopPropagation();">The Natural Hypertension Solution No One Is Talking About - A New Way to Control High Blood Pressure</h2>
+                <p class="ad-description" onclick="window.location.href=destinationURL; event.stopPropagation();">This safe, natural solution doesn't just treat hypertension but actually corrects it. Learn more today!</p>
+            </div>
+        </div>
+        <button class="next-button" onclick="window.location.href=destinationURL">NEXT</button>
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #666; cursor: pointer;" onclick="window.location.href=destinationURL">
+            Do Not Sell or Share My Personal Information
+        </div>
+    </div>
+
+    <!-- Mobile Story View - Unchanged -->
     <div class="story-progress">
         <div class="progress-bar">
             <div class="progress-bar-fill" id="progress1"></div>
@@ -199,6 +480,7 @@
             <div class="video-container">
                 <!-- Video element -->
                 <video id="video1" preload="auto" muted playsinline>
+                    <!-- <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/Blood%20Pressure_1.mp4" type="video/mp4"> -->
                     <source src="https://staticvideoshost.online/Blood%20Pressure_1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -214,7 +496,7 @@
                     <source src="https://staticvideoshost.online/Blood%20Pressure_2.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button class="cta-button">Learn More</button>
+                <button class="cta-button">Swipe →</button>
             </div>
         </div>
         
@@ -223,11 +505,26 @@
                 <!-- Video element -->
                 <video id="video3" preload="auto" muted playsinline>
                     <!-- Replace with your third video URL -->
-                    <source src="https://staticvideoshost.online/Blood%20Pressure_3.mp4" type="video/mp4">
+                    <source src="https://staticvideoshost.online/Blood%20Pressure_5.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 <button class="cta-button">Learn More</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Final Screen with Heartbeat Effect -->
+    <div class="final-screen" id="finalScreen">
+        <div class="final-content">
+            <div class="final-title" onclick="window.location.href=destinationURL">
+                The Natural Hypertension Solution No One Is Talking About - A New Way to Control High Blood Pressure
+            </div>
+            <div class="final-description" onclick="window.location.href=destinationURL">
+                This safe, natural solution doesn't just treat hypertension but actually corrects it.
+            </div>
+            <button class="final-cta-button" onclick="window.location.href=destinationURL">
+                Find Solution Now
+            </button>
         </div>
     </div>
     
@@ -244,13 +541,15 @@
             document.getElementById('progress2'),
             document.getElementById('progress3')
         ];
+        const finalScreen = document.getElementById('finalScreen');
         
         // Destination URL for all redirects
         const destinationURL = "https://www.mybpfix.com/video_drugs_stk_prod_dr_nhc_mon?affId=roi&c1=w9rlupajqi0kr94a3mujfies&sid=Perform%20Media&utm_medium=cpc&utm_source=roi&utm_campaign=Perform%20Media&utm_content=Perform%20Media&utm_term=Perform%20Media&txid=";
-        //const destinationURL = "file:///Users/tizil.s/test/serp/index.html";
+        //const destinationURL = "file:///Users/tizil.s/test/serp/index_new.html";
         
         let currentStory = 0;
         let animationFrameIds = Array(videos.length).fill(null);
+        let touchTimeout = null;  // Add the missing variable declaration for hold functionality
 
         
         // Initialize - mark all progress bars as empty
@@ -271,22 +570,36 @@
             progress.style.width = `${percent}%`;
         }
         
+        // Show the final screen
+        function showFinalScreen() {
+            // Make sure the story remains visible
+            stories[currentStory].classList.add('active');
+            
+            // Keep the current video playing but muted in the background
+            videos[currentStory].muted = true;
+            
+            // Show the final screen
+            finalScreen.classList.add('active');
+        }
+        
         // Go to the next story
         function goToNextStory() {
             // Mark current progress bar as complete
             progressBars[currentStory].style.width = '100%';
             
-            // Hide current story
-            stories[currentStory].classList.remove('active');
-            videos[currentStory].pause();
+            // Hide current story only if not showing final screen
+            if (!finalScreen.classList.contains('active')) {
+                stories[currentStory].classList.remove('active');
+                videos[currentStory].pause();
+            }
             
             // Move to next story
             currentStory++;
             
-            // If we've seen all stories, redirect to destination
+            // If we've seen all stories, show final screen instead of resetting
             if (currentStory >= stories.length) {
-                window.location.href = destinationURL;
-                // resetAllStories();
+                currentStory = stories.length - 1; // Stay on the last story for background
+                showFinalScreen();
                 return;
             }
             
@@ -299,6 +612,14 @@
         // Go to the previous story
         function goToPreviousStory() {
             if (currentStory <= 0) return;
+
+            // If final screen is showing, hide it and go back to the last video
+            if (finalScreen.classList.contains('active')) {
+                finalScreen.classList.remove('active');
+                videos[currentStory].muted = false; // Unmute the video
+                videos[currentStory].play();
+                return;
+            }
 
             // Pause and hide current video/story
             stories[currentStory].classList.remove('active');
@@ -325,6 +646,9 @@
         
         // Reset all stories to start from beginning
         function resetAllStories() {
+            // Hide the final screen if it's showing
+            finalScreen.classList.remove('active');
+            
             // Reset counter
             currentStory = 0;
 
@@ -370,14 +694,30 @@
             });
         });
 
+        // Add specific event listener for the last video to show final screen before it ends
+        videos[2].addEventListener('timeupdate', function() {
+            // If we're on the last video and it's near the end (90% complete)
+            if (currentStory === 2 && !finalScreen.classList.contains('active')) {
+                if (this.currentTime >= this.duration * 0.9) {
+                    showFinalScreen();
+                }
+            }
+        });
 
         // Touch/click navigation
         document.addEventListener('click', (e) => {
-            // Skip if the click was on the CTA button
-            if (e.target.classList.contains('cta-button')) {
+            // Skip if the click was on any CTA button
+            if (e.target.classList.contains('cta-button') || 
+                e.target.classList.contains('final-cta-button') ||
+                e.target.classList.contains('final-title') ||
+                e.target.classList.contains('final-description')) {
                 e.stopPropagation();
                 window.location.href = destinationURL;
-                // alert('Learn More clicked!');
+                return;
+            }
+            
+            // If final screen is showing, clicking anywhere else should do nothing
+            if (finalScreen.classList.contains('active')) {
                 return;
             }
             
@@ -399,9 +739,14 @@
         let touchendX = 0;
         let touchstartY = 0;
         let touchendY = 0;
-        // let touchTimeout = null;                                                // hold to pause video
         
         function handleSwipe() {
+            // If final screen is showing, any swipe should redirect
+            if (finalScreen.classList.contains('active')) {
+                window.location.href = destinationURL;
+                return;
+            }
+            
             const horizontalSwipeThreshold = 50; // minimum distance for horizontal swipe
             const verticalSwipeThreshold = 50;   // minimum distance for vertical swipe
             
@@ -429,59 +774,80 @@
             }
         }
         
-        // // Pause video on touch/mouse hold                                                // hold to pause video
-        // function pauseVideoOnHold() {
-        //     // Clear any existing timeout to prevent multiple pauses
-        //     if (touchTimeout) clearTimeout(touchTimeout);
+        // Pause video on touch/mouse hold
+        function pauseVideoOnHold() {
+            // Clear any existing timeout to prevent multiple pauses
+            if (touchTimeout) clearTimeout(touchTimeout);
             
-        //     // Set a small timeout to differentiate between tap and hold
-        //     touchTimeout = setTimeout(() => {
-        //         const currentVideo = videos[currentStory];
-        //         if (!currentVideo.paused) {
-        //             currentVideo.pause();
-        //         }
-        //     }, 200); // 200ms delay to detect a hold
-        // }
+            // Set a small timeout to differentiate between tap and hold
+            touchTimeout = setTimeout(() => {
+                const currentVideo = videos[currentStory];
+                if (!currentVideo.paused) {
+                    currentVideo.pause();
+                }
+            }, 200); // 200ms delay to detect a hold
+        }
         
-        // // Resume video on release if it was paused
-        // function resumeVideoOnRelease() {
-        //     // Clear the timeout in case the hold was too short
-        //     if (touchTimeout) {
-        //         clearTimeout(touchTimeout);
-        //         touchTimeout = null;
-        //     }
+        // Resume video on release if it was paused
+        function resumeVideoOnRelease() {
+            // Clear the timeout in case the hold was too short
+            if (touchTimeout) {
+                clearTimeout(touchTimeout);
+                touchTimeout = null;
+            }
             
-        //     const currentVideo = videos[currentStory];
-        //     if (currentVideo.paused) {
-        //         currentVideo.play();
-        //     }
-        // }
+            const currentVideo = videos[currentStory];
+            // Force play regardless of paused state to ensure playback continues
+            try {
+                currentVideo.play().catch(error => {
+                    console.log("Error resuming video:", error);
+                });
+            } catch (error) {
+                console.log("Error trying to play video:", error);
+            }
+        }
         
         document.addEventListener('touchstart', e => {
+            // Skip if touch is on CTA button
+            if (e.target.classList.contains('cta-button') || 
+                e.target.classList.contains('final-cta-button') ||
+                e.target.classList.contains('final-title') ||
+                e.target.classList.contains('final-description')) {
+                return;
+            }
+            
             touchstartX = e.changedTouches[0].screenX;
             touchstartY = e.changedTouches[0].screenY;
-            // pauseVideoOnHold();                                                // hold to pause video
+            pauseVideoOnHold();
         });
         
         document.addEventListener('touchend', e => {
+            // Skip if touch is on CTA button
+            if (e.target.classList.contains('cta-button') || 
+                e.target.classList.contains('final-cta-button') ||
+                e.target.classList.contains('final-title') ||
+                e.target.classList.contains('final-description')) {
+                return;
+            }
+            
             touchendX = e.changedTouches[0].screenX;
             touchendY = e.changedTouches[0].screenY;
-            // resumeVideoOnRelease();                                                // hold to pause video
+            resumeVideoOnRelease();
             handleSwipe();
         });
         
-        // // Also add mouse events for desktop                                                // hold to pause video
-        // document.addEventListener('mousedown', e => {
-        //     // Skip if the click was on the CTA button
-        //     if (e.target.classList.contains('cta-button')) return;
-        //     pauseVideoOnHold();
-        // });
+        // Also add mouse events for desktop
+        document.addEventListener('mousedown', e => {
+            // Skip if the click was on the CTA button
+            if (e.target.classList.contains('cta-button')) return;
+            pauseVideoOnHold();
+        });
         
-        // document.addEventListener('mouseup', e => {
-        //     // Skip if the click was on the CTA button
-        //     if (e.target.classList.contains('cta-button')) return;
-        //     resumeVideoOnRelease();
-        // });
+        document.addEventListener('mouseup', e => {
+            // Skip if the click was on the CTA button
+            if (e.target.classList.contains('cta-button')) return;
+            resumeVideoOnRelease();
+        });
 
     </script>
 </body>
