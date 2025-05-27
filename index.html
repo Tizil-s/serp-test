@@ -99,7 +99,7 @@
         /* CTA Button */
         .cta-button {
             position: absolute;
-            bottom: 60px; /* Increased from 10px to ensure visibility */
+            bottom: 120px; /* Changed from 60px to 120px to increase distance from bottom */
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 30px;
@@ -376,33 +376,6 @@
         // Call the function on resize and orientation change
         window.addEventListener('resize', fixViewportHeight);
         window.addEventListener('orientationchange', fixViewportHeight);
-
-        // Ensure CTA buttons are visible on iOS devices
-        function adjustCTAButtonsForIOS() {
-            // Check if iOS
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            
-            if (isIOS) {
-                const ctaButtons = document.querySelectorAll('.cta-button');
-                ctaButtons.forEach(button => {
-                    // Ensure the button is visible within the safe area
-                    button.style.bottom = '80px'; // Higher position for iOS
-                    
-                    // Apply styles to make button more noticeable
-                    button.style.padding = '15px 40px';
-                    button.style.fontSize = '18px';
-                    button.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
-                });
-            }
-        }
-        
-        // Run the iOS adjustment
-        adjustCTAButtonsForIOS();
-        
-        // Also run on orientation change as this commonly causes layout issues
-        window.addEventListener('orientationchange', function() {
-            setTimeout(adjustCTAButtonsForIOS, 300); // Slight delay to let layout settle
-        });
 
         // Story functionality
         const stories = document.querySelectorAll('.story');
