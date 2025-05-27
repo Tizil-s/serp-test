@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,6 +73,7 @@
         .story-container {
             position: relative;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             width: 100vw;
             overflow: hidden;
         }
@@ -122,6 +123,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            height: calc(var(--vh, 1vh) * 100);
             background: linear-gradient(to bottom, 
                 rgba(0, 0, 0, 0.4) 0%, 
                 rgba(0, 0, 0, 0.5) 25%,
@@ -389,6 +391,9 @@
                 padding: 0;
                 margin: 0;
                 overflow: hidden;
+                height: 100%;
+                width: 100%;
+                position: fixed;
             }
             
             h1 {
@@ -398,8 +403,8 @@
             }
             
             .video-container {
-                height: 100vh; /* to cover full screen */
-                width: 100vw;
+                height: 100%; /* Changed from 100vh to 100% */
+                width: 100%;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -414,15 +419,26 @@
             }
             
             video {
-                width: 100vw;
-                height: 100vh;
-                object-fit: contain; /* contain */
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
                 background-color: #000;
                 position: relative;
                 top: 0;
                 left: 0;
                 margin: 0;
                 padding: 0;
+            }
+            
+            /* Adjust CTA button positioning for better visibility on mobile */
+            .cta-button {
+                position: absolute;
+                bottom: 60px; /* Increased from 10px to ensure visibility */
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 12px 30px;
+                font-size: 16px;
+                z-index: 100; /* Increased z-index for better visibility */
             }
             
             .controls {
@@ -533,6 +549,48 @@
     </div> -->
 
     <script>
+        // Fix for iOS viewport height issues
+        function fixViewportHeight() {
+            // First we get the viewport height and multiply it by 1% to get a value for a vh unit
+            let vh = window.innerHeight * 0.01;
+            // Then we set the value in the --vh custom property to the root of the document
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // Call the function to set the height initially
+        fixViewportHeight();
+        
+        // Call the function on resize and orientation change
+        window.addEventListener('resize', fixViewportHeight);
+        window.addEventListener('orientationchange', fixViewportHeight);
+
+        // Ensure CTA buttons are visible on iOS devices
+        function adjustCTAButtonsForIOS() {
+            // Check if iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                const ctaButtons = document.querySelectorAll('.cta-button');
+                ctaButtons.forEach(button => {
+                    // Ensure the button is visible within the safe area
+                    button.style.bottom = '80px'; // Higher position for iOS
+                    
+                    // Apply styles to make button more noticeable
+                    button.style.padding = '15px 40px';
+                    button.style.fontSize = '18px';
+                    button.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
+                });
+            }
+        }
+        
+        // Run the iOS adjustment
+        adjustCTAButtonsForIOS();
+        
+        // Also run on orientation change as this commonly causes layout issues
+        window.addEventListener('orientationchange', function() {
+            setTimeout(adjustCTAButtonsForIOS, 300); // Slight delay to let layout settle
+        });
+
         // Story functionality
         const stories = document.querySelectorAll('.story');
         const videos = document.querySelectorAll('video');
