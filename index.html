@@ -73,6 +73,7 @@
         .story-container {
             position: relative;
             height: 100vh;
+            /* height: calc(var(--vh, 1vh) * 100); */
             width: 100vw;
             overflow: hidden;
         }
@@ -129,6 +130,7 @@
         
         @media (min-height: 800px) {
             .cta-button {
+                /* bottom: 8%; More space on taller screens */
                 bottom: 10px;
             }
         }
@@ -140,6 +142,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* height: calc(var(--vh, 1vh) * 100); */
             background: linear-gradient(to bottom, 
                 rgba(0, 0, 0, 0.4) 0%, 
                 rgba(0, 0, 0, 0.5) 25%,
@@ -377,7 +380,69 @@
         </div>
     </div>
 
+    <audio id="backgroundAudio" preload="auto">
+        <source src="https://storage.googleapis.com/bucket-quickstart_prismatic-iris-460406-g5/music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
+
+        // Fix for iOS viewport height issues
+        // function fixViewportHeight() {
+        //     // First we get the viewport height and multiply it by 1% to get a value for a vh unit
+        //     let vh = window.innerHeight * 0.01;
+        //     // Then we set the value in the --vh custom property to the root of the document
+        //     document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+        //     // Also adjust CTA button positions when viewport changes
+        //     adjustCTAButtonPositions();
+        // }
+
+        // // Call the function to set the height initially
+        // fixViewportHeight();
+        
+        // // Call the function on resize and orientation change
+        // window.addEventListener('resize', fixViewportHeight);
+        // window.addEventListener('orientationchange', fixViewportHeight);
+
+        // // Function to dynamically adjust CTA button positions
+        // function adjustCTAButtonPositions() {
+        //     const videoContainers = document.querySelectorAll('.video-container');
+        //     const ctaButtons = document.querySelectorAll('.cta-button');
+            
+        //     videoContainers.forEach((container, index) => {
+        //         if (ctaButtons[index]) {
+        //             // Get the actual visible height of the video
+        //             const video = container.querySelector('video');
+        //             if (video) {
+        //                 const videoRect = video.getBoundingClientRect();
+        //                 const containerRect = container.getBoundingClientRect();
+                        
+        //                 // Calculate safe zone for button (within the visible video area)
+        //                 const videoVisibleHeight = videoRect.height;
+        //                 const bottomPosition = Math.min(
+        //                     videoVisibleHeight * 0.1, // 10% of video height
+        //                     30 // but not more than 30px from bottom
+        //                 );
+                        
+        //                 // Apply calculated position
+        //                 ctaButtons[index].style.bottom = `${bottomPosition}px`;
+        //             }
+        //         }
+        //     });
+        // }
+
+        // // Initial adjustment
+        // window.addEventListener('load', adjustCTAButtonPositions);
+        
+        // // Also adjust when video dimensions might change
+        // document.querySelectorAll('video').forEach(video => {
+        //     video.addEventListener('loadedmetadata', adjustCTAButtonPositions);
+        //     video.addEventListener('play', adjustCTAButtonPositions);
+        // });
+
+
+
         // Story functionality
         const stories = document.querySelectorAll('.story');
         const videos = document.querySelectorAll('video');
@@ -387,6 +452,13 @@
             document.getElementById('progress3')
         ];
         const finalScreen = document.getElementById('finalScreen');
+        const backgroundAudio = document.getElementById('backgroundAudio'); // Get the audio element
+        let hasAudioPlayed = false; // Add flag to track if audio has played
+        
+        console.log('Background audio element:', backgroundAudio);
+        if (backgroundAudio) {
+            console.log('Background audio source:', backgroundAudio.src);
+        }
         
         // Destination URL for all redirects
         const destinationURL = "https://www.mybpfix.com/video_drugs_stk_prod_dr_nhc_mon?affId=roi&c1=w9rlupajqi0kr94a3mujfies&sid=Perform%20Media&utm_medium=cpc&utm_source=roi&utm_campaign=Perform%20Media&utm_content=Perform%20Media&utm_term=Perform%20Media&txid=";
@@ -405,6 +477,10 @@
         // Start the first video
         stories[0].classList.add('active');
         videos[0].play();
+        // backgroundAudio.play(); // Start background audio - REMOVED AUTOPLAY
+        // if (backgroundAudio) {
+        //     backgroundAudio.play().catch(error => console.error('Error playing background audio:', error));
+        // }
         
         // Update current progress bar based on video time
         function updateCurrentProgressBar() {
@@ -461,6 +537,7 @@
             if (finalScreen.classList.contains('active')) {
                 finalScreen.classList.remove('active');
                 videos[currentStory].muted = false; // Unmute the video
+                // Remove audio restart here
                 videos[currentStory].play();
                 return;
             }
@@ -514,6 +591,7 @@
             // Activate first story
             stories[0].classList.add('active');
             videos[0].play();  // This will trigger the animateProgressBar() via 'play' event
+            // Remove audio restart here
         }
 
 
@@ -558,14 +636,15 @@
                 return;
             }
             
-            // If final screen is showing, ignore clicks (don't let them affect video playback)
+            // Start background audio only if it hasn't played before
+            if (backgroundAudio && !hasAudioPlayed) {
+                backgroundAudio.play().then(() => {
+                    hasAudioPlayed = true;
+                }).catch(error => console.error('Error starting background audio on click:', error));
+            }
+            
+            // If final screen is showing, ignore clicks
             if (finalScreen.classList.contains('active')) {
-                // Don't redirect if clicking on title or description text
-                // if (e.target.classList.contains('final-title') || 
-                //     e.target.classList.contains('final-description')) {
-                //     return;
-                // }
-                // window.location.href = destinationURL;
                 e.stopPropagation(); // Stop event propagation
                 return;
             }
@@ -676,6 +755,13 @@
                 return;
             }
             
+            // Start background audio only if it hasn't played before
+            if (backgroundAudio && !hasAudioPlayed) {
+                backgroundAudio.play().then(() => {
+                    hasAudioPlayed = true;
+                }).catch(error => console.error('Error starting background audio on touch:', error));
+            }
+            
             // Skip touch tracking on final screen text elements
             if (e.target.classList.contains('final-title') || 
                 e.target.classList.contains('final-description')) {
@@ -710,6 +796,12 @@
         document.addEventListener('mousedown', e => {
             // Skip if the click was on the CTA button
             if (e.target.classList.contains('cta-button')) return;
+            // Start background audio only if it hasn't played before
+            if (backgroundAudio && !hasAudioPlayed) {
+                backgroundAudio.play().then(() => {
+                    hasAudioPlayed = true;
+                }).catch(error => console.error('Error starting background audio on mousedown:', error));
+            }
             pauseVideoOnHold();
         });
         
