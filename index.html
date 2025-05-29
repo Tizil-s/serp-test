@@ -413,29 +413,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     animation: overlayHeartbeatPulse 1.5s infinite;
 }
 
-/*  Ad title footer styles */
-/* .ad-title-footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 30px;
-    width: 100%;
-    padding: 10px 10px 10px 10px;
-    background: rgba(0,0,0,0.7);
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-    z-index: 10;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
 
-.video-wrapper {
-    position: relative;
-}  */
 </style>
 <script>
     function getUrlParameter(name) {
@@ -535,7 +513,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     <source src="https://staticvideoshost.online/Blood%20Pressure_6.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <!-- <div class="ad-title-footer">Hypertension can be cured without drugs. ⭐⭐⭐⭐ (3081)</div> -->
                 <button class="primary-cta-button">Learn More</button>
             </div>
         </div>
@@ -582,54 +559,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             } else {
                 console.warn("No element with class 'mobileAnchor' found.");
             }
-
-            // // Fix for iOS viewport height issues
-            // initializeViewportHeight();
         });
 
-        // // Fix for iOS viewport height issues
-        // function initializeViewportHeight() {
-        //     // First we get the viewport height and multiply it by 1% to get a value for a vh unit
-        //     let viewportHeight = window.innerHeight * 0.01;
-        //     // Then we set the value in the --vh custom property to the root of the document
-        //     document.documentElement.style.setProperty('--vh', `${viewportHeight}px`);
-            
-        //     // Also adjust CTA button positions when viewport changes
-        //     adjustCtaButtonPositions();
-        // }
-
-
-        
-        // // Call the function on resize and orientation change
-        // window.addEventListener('resize', initializeViewportHeight);
-        // window.addEventListener('orientationchange', initializeViewportHeight);
-
-        // // Function to dynamically adjust CTA button positions
-        // function adjustCtaButtonPositions() {
-        //     const videoWrappers = document.querySelectorAll('.video-wrapper');
-        //     const ctaButtons = document.querySelectorAll('.primary-cta-button');
-            
-        //     videoWrappers.forEach((wrapper, index) => {
-        //         if (ctaButtons[index]) {
-        //             // Get the actual visible height of the video
-        //             const videoElement = wrapper.querySelector('.video-element');
-        //             if (videoElement) {
-        //                 const videoElementRect = videoElement.getBoundingClientRect();
-        //                 const wrapperRect = wrapper.getBoundingClientRect();
-                        
-        //                 // Calculate safe zone for button (within the visible video area)
-        //                 const videoVisibleHeight = videoElementRect.height;
-        //                 const bottomPosition = Math.min(
-        //                     videoVisibleHeight * 0.1, // 10% of video height
-        //                     30 // but not more than 30px from bottom
-        //                 );
-                        
-        //                 // Apply calculated position
-        //                 ctaButtons[index].style.bottom = `${bottomPosition}px`;
-        //             }
-        //         }
-        //     });
-        // }
+ 
 
     // Story functionality
     const storySlide = document.querySelector('.story-slide');
@@ -711,41 +643,13 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
     }
     
-    document.addEventListener('touchstart', touchStartEvent => {
-        if (touchStartEvent.target.classList.contains('primary-cta-button') || 
-            touchStartEvent.target.classList.contains('final-overlay-cta-button') ||
-            touchStartEvent.target.classList.contains('final-overlay-title') || 
-            touchStartEvent.target.classList.contains('final-overlay-description')) {
-            return;
-        }
-        
-        touchStartXPosition = touchStartEvent.changedTouches[0].screenX;
-        touchStartYPosition = touchStartEvent.changedTouches[0].screenY;
-    });
-    
-    document.addEventListener('touchend', touchEndEvent => {
-        if (touchEndEvent.target.classList.contains('primary-cta-button') || 
-            touchEndEvent.target.classList.contains('final-overlay-cta-button') ||
-            touchEndEvent.target.classList.contains('final-overlay-title') || 
-            touchEndEvent.target.classList.contains('final-overlay-description')) {
-            return;
-        }
-        
-        touchEndXPosition = touchEndEvent.changedTouches[0].screenX;
-        touchEndYPosition = touchEndEvent.changedTouches[0].screenY;
-        handleUserSwipeGesture();
-    });
-
-    // Initial adjustment
-    videoElement.addEventListener('loadedmetadata', adjustCtaButtonPositions);
-
-    // --- Press/Hold to Pause, Release to Play Functionality ---
+    // Insert working logic from serp.html, adapted for serp_new.html
     let userTouchTimeout = null;
-    const videoWrapper = document.querySelector('.video-wrapper');
-    const ctaButton = document.querySelector('.primary-cta-button');
 
     function pauseVideoOnUserHold() {
+        // Clear any existing timeout to prevent multiple pauses
         if (userTouchTimeout) clearTimeout(userTouchTimeout);
+        // Set a small timeout to differentiate between tap and hold
         userTouchTimeout = setTimeout(() => {
             if (!videoElement.paused) {
                 videoElement.pause();
@@ -754,6 +658,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
 
     function resumeVideoOnUserRelease() {
+        // Clear the timeout in case the hold was too short
         if (userTouchTimeout) {
             clearTimeout(userTouchTimeout);
             userTouchTimeout = null;
@@ -770,23 +675,48 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
     }
 
-    // Mouse events for desktop
-    videoWrapper.addEventListener('mousedown', function(e) {
-        if (e.target.classList.contains('primary-cta-button')) return;
+    document.addEventListener('touchstart', touchStartEvent => {
+        // Skip if touch is on CTA button
+        if (touchStartEvent.target.classList.contains('primary-cta-button') || 
+            touchStartEvent.target.classList.contains('final-overlay-cta-button')) {
+            return;
+        }
+        // Skip touch tracking on final screen text elements
+        if (touchStartEvent.target.classList.contains('final-overlay-title') || 
+            touchStartEvent.target.classList.contains('final-overlay-description')) {
+            return;
+        }
+        touchStartXPosition = touchStartEvent.changedTouches[0].screenX;
+        touchStartYPosition = touchStartEvent.changedTouches[0].screenY;
         pauseVideoOnUserHold();
-    });
-    videoWrapper.addEventListener('mouseup', function(e) {
-        if (e.target.classList.contains('primary-cta-button')) return;
-        resumeVideoOnUserRelease();
     });
 
-    // Touch events for mobile
-    videoWrapper.addEventListener('touchstart', function(e) {
-        if (e.target.classList.contains('primary-cta-button')) return;
+    document.addEventListener('touchend', touchEndEvent => {
+        // Skip if touch is on CTA button
+        if (touchEndEvent.target.classList.contains('primary-cta-button') || 
+            touchEndEvent.target.classList.contains('final-overlay-cta-button')) {
+            return;
+        }
+        // Skip touch tracking on final screen text elements
+        if (touchEndEvent.target.classList.contains('final-overlay-title') || 
+            touchEndEvent.target.classList.contains('final-overlay-description')) {
+            return;
+        }
+        touchEndXPosition = touchEndEvent.changedTouches[0].screenX;
+        touchEndYPosition = touchEndEvent.changedTouches[0].screenY;
+        resumeVideoOnUserRelease();
+        handleUserSwipeGesture();
+    });
+
+    document.addEventListener('mousedown', mouseDownEvent => {
+        // Skip if the click was on the CTA button
+        if (mouseDownEvent.target.classList.contains('primary-cta-button')) return;
         pauseVideoOnUserHold();
     });
-    videoWrapper.addEventListener('touchend', function(e) {
-        if (e.target.classList.contains('primary-cta-button')) return;
+
+    document.addEventListener('mouseup', mouseUpEvent => {
+        // Skip if the click was on the CTA button
+        if (mouseUpEvent.target.classList.contains('primary-cta-button')) return;
         resumeVideoOnUserRelease();
     });
 </script>
