@@ -738,6 +738,57 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
     // Initial adjustment
     videoElement.addEventListener('loadedmetadata', adjustCtaButtonPositions);
+
+    // --- Press/Hold to Pause, Release to Play Functionality ---
+    let userTouchTimeout = null;
+    const videoWrapper = document.querySelector('.video-wrapper');
+    const ctaButton = document.querySelector('.primary-cta-button');
+
+    function pauseVideoOnUserHold() {
+        if (userTouchTimeout) clearTimeout(userTouchTimeout);
+        userTouchTimeout = setTimeout(() => {
+            if (!videoElement.paused) {
+                videoElement.pause();
+            }
+        }, 200); // 200ms delay to detect a hold
+    }
+
+    function resumeVideoOnUserRelease() {
+        if (userTouchTimeout) {
+            clearTimeout(userTouchTimeout);
+            userTouchTimeout = null;
+        }
+        if(finalOverlayScreen.classList.contains('is-active')){
+            return;
+        }
+        try {
+            videoElement.play().catch(error => {
+                console.log("Error resuming video:", error);
+            });
+        } catch (error) {
+            console.log("Error trying to play video:", error);
+        }
+    }
+
+    // Mouse events for desktop
+    videoWrapper.addEventListener('mousedown', function(e) {
+        if (e.target.classList.contains('primary-cta-button')) return;
+        pauseVideoOnUserHold();
+    });
+    videoWrapper.addEventListener('mouseup', function(e) {
+        if (e.target.classList.contains('primary-cta-button')) return;
+        resumeVideoOnUserRelease();
+    });
+
+    // Touch events for mobile
+    videoWrapper.addEventListener('touchstart', function(e) {
+        if (e.target.classList.contains('primary-cta-button')) return;
+        pauseVideoOnUserHold();
+    });
+    videoWrapper.addEventListener('touchend', function(e) {
+        if (e.target.classList.contains('primary-cta-button')) return;
+        resumeVideoOnUserRelease();
+    });
 </script>
 </stl_body>
 </html>
