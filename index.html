@@ -583,53 +583,53 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 console.warn("No element with class 'mobileAnchor' found.");
             }
 
-            // Fix for iOS viewport height issues
-            initializeViewportHeight();
+            // // Fix for iOS viewport height issues
+            // initializeViewportHeight();
         });
 
-        // Fix for iOS viewport height issues
-        function initializeViewportHeight() {
-            // First we get the viewport height and multiply it by 1% to get a value for a vh unit
-            let viewportHeight = window.innerHeight * 0.01;
-            // Then we set the value in the --vh custom property to the root of the document
-            document.documentElement.style.setProperty('--vh', `${viewportHeight}px`);
+        // // Fix for iOS viewport height issues
+        // function initializeViewportHeight() {
+        //     // First we get the viewport height and multiply it by 1% to get a value for a vh unit
+        //     let viewportHeight = window.innerHeight * 0.01;
+        //     // Then we set the value in the --vh custom property to the root of the document
+        //     document.documentElement.style.setProperty('--vh', `${viewportHeight}px`);
             
-            // Also adjust CTA button positions when viewport changes
-            adjustCtaButtonPositions();
-        }
+        //     // Also adjust CTA button positions when viewport changes
+        //     adjustCtaButtonPositions();
+        // }
 
 
         
-        // Call the function on resize and orientation change
-        window.addEventListener('resize', initializeViewportHeight);
-        window.addEventListener('orientationchange', initializeViewportHeight);
+        // // Call the function on resize and orientation change
+        // window.addEventListener('resize', initializeViewportHeight);
+        // window.addEventListener('orientationchange', initializeViewportHeight);
 
-        // Function to dynamically adjust CTA button positions
-        function adjustCtaButtonPositions() {
-            const videoWrappers = document.querySelectorAll('.video-wrapper');
-            const ctaButtons = document.querySelectorAll('.primary-cta-button');
+        // // Function to dynamically adjust CTA button positions
+        // function adjustCtaButtonPositions() {
+        //     const videoWrappers = document.querySelectorAll('.video-wrapper');
+        //     const ctaButtons = document.querySelectorAll('.primary-cta-button');
             
-            videoWrappers.forEach((wrapper, index) => {
-                if (ctaButtons[index]) {
-                    // Get the actual visible height of the video
-                    const videoElement = wrapper.querySelector('.video-element');
-                    if (videoElement) {
-                        const videoElementRect = videoElement.getBoundingClientRect();
-                        const wrapperRect = wrapper.getBoundingClientRect();
+        //     videoWrappers.forEach((wrapper, index) => {
+        //         if (ctaButtons[index]) {
+        //             // Get the actual visible height of the video
+        //             const videoElement = wrapper.querySelector('.video-element');
+        //             if (videoElement) {
+        //                 const videoElementRect = videoElement.getBoundingClientRect();
+        //                 const wrapperRect = wrapper.getBoundingClientRect();
                         
-                        // Calculate safe zone for button (within the visible video area)
-                        const videoVisibleHeight = videoElementRect.height;
-                        const bottomPosition = Math.min(
-                            videoVisibleHeight * 0.1, // 10% of video height
-                            30 // but not more than 30px from bottom
-                        );
+        //                 // Calculate safe zone for button (within the visible video area)
+        //                 const videoVisibleHeight = videoElementRect.height;
+        //                 const bottomPosition = Math.min(
+        //                     videoVisibleHeight * 0.1, // 10% of video height
+        //                     30 // but not more than 30px from bottom
+        //                 );
                         
-                        // Apply calculated position
-                        ctaButtons[index].style.bottom = `${bottomPosition}px`;
-                    }
-                }
-            });
-        }
+        //                 // Apply calculated position
+        //                 ctaButtons[index].style.bottom = `${bottomPosition}px`;
+        //             }
+        //         }
+        //     });
+        // }
 
     // Story functionality
     const storySlide = document.querySelector('.story-slide');
