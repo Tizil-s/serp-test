@@ -228,6 +228,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             font-size: clamp(14px, 3vw, 18px);
             /* Responsive padding */
             padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 35px);
+
+            /* change for cta button  */
+            display: none; /* Hide button initially */
         }
 
         @media (max-height: 600px) {
@@ -430,6 +433,61 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 }
 
 
+/* Loader */
+
+
+
+/* Loading Spinner Styles */
+.loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 2;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+.loader-message {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 280px;
+}
+
+.loader-message p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.loader-message p:first-child {
+    font-weight: 600;
+}
+
+.loader-message p:last-child {
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 </style>
 <script>
     function getUrlParameter(name) {
@@ -524,9 +582,27 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     <div class="stories-main-container">
         <div class="story-slide is-active" id="storySlideOne">
             <div class="video-wrapper">
+
+
+                <!-- Loading  -->
+
+
+
+                <!-- Loading State -->
+                <div class="loading-container" id="loadingContainer">
+                    <div class="loading-spinner"></div>
+                    <div class="loader-message">
+                        <p>Just a moment... Your personalized content is loading.</p>
+                        <p>This one's picked just for you—totally worth the wait!</p>
+                    </div>
+                </div>
+
+
+
+                
                 <!-- Video element -->
                 <video id="videoElementOne" class="video-element" preload="auto" muted playsinline>
-                    <source src="https://staticvideoshost.online/LifetimeValue_1.mp4" type="video/mp4">
+                    <source src="https://staticvideoshost.online/LifetimeValue_4.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 <button class="primary-cta-button"> Search Now → </button>
@@ -591,6 +667,50 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // Start the video
     videoElement.play();
+
+    /* change for cta button  */
+    
+    // Show CTA button when video starts playing
+    videoElement.addEventListener('playing', function() {
+        const ctaButton = document.querySelector('.primary-cta-button');
+        // loading
+        const loadingContainer = document.getElementById('loadingContainer');    
+        if (ctaButton) {
+            ctaButton.style.display = 'block';
+        }
+        // loading
+        if (loadingContainer) {
+            loadingContainer.style.display = 'none';
+        }
+        animateProgressSegment();
+    });
+
+
+    // loading
+
+    // Add loading state handling
+    videoElement.addEventListener('loadstart', function() {
+        const loadingContainer = document.getElementById('loadingContainer');
+        if (loadingContainer) {
+            loadingContainer.style.display = 'flex';
+        }
+    });
+
+    videoElement.addEventListener('error', function() {
+        const loadingContainer = document.getElementById('loadingContainer');
+        if (loadingContainer) {
+            const loaderMessage = loadingContainer.querySelector('.loader-message');
+            if (loaderMessage) {
+                loaderMessage.innerHTML = '<p>Error loading video. Please try again.</p>';
+            }
+        }
+    });
+
+
+
+
+
+
     
     function updateProgressSegment() {
         const progressPercentage = (videoElement.currentTime / videoElement.duration) * 100;
@@ -615,8 +735,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         requestAnimationFrame(animationStep);
     }
 
-    videoElement.addEventListener('play', animateProgressSegment);
-    
     videoElement.addEventListener('timeupdate', function() {
         if (!finalOverlayScreen.classList.contains('is-active') && 
             this.currentTime >= this.duration * 0.99) {
@@ -702,6 +820,12 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchStartEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
+        // Skip touch interactions on loading container elements
+        if (touchStartEvent.target.closest('.loading-container') || 
+            touchStartEvent.target.classList.contains('loading-spinner') ||
+            touchStartEvent.target.closest('.loader-message')) {
+            return;
+        }
         touchStartXPosition = touchStartEvent.changedTouches[0].screenX;
         touchStartYPosition = touchStartEvent.changedTouches[0].screenY;
         pauseVideoOnUserHold();
@@ -718,6 +842,12 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchEndEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
+        // Skip touch interactions on loading container elements
+        if (touchEndEvent.target.closest('.loading-container') || 
+            touchEndEvent.target.classList.contains('loading-spinner') ||
+            touchEndEvent.target.closest('.loader-message')) {
+            return;
+        }
         touchEndXPosition = touchEndEvent.changedTouches[0].screenX;
         touchEndYPosition = touchEndEvent.changedTouches[0].screenY;
         resumeVideoOnUserRelease();
@@ -727,12 +857,24 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('mousedown', mouseDownEvent => {
         // Skip if the click was on the CTA button
         if (mouseDownEvent.target.classList.contains('primary-cta-button')) return;
+        // Skip mouse interactions on loading container elements
+        if (mouseDownEvent.target.closest('.loading-container') || 
+            mouseDownEvent.target.classList.contains('loading-spinner') ||
+            mouseDownEvent.target.closest('.loader-message')) {
+            return;
+        }
         pauseVideoOnUserHold();
     });
 
     document.addEventListener('mouseup', mouseUpEvent => {
         // Skip if the click was on the CTA button
         if (mouseUpEvent.target.classList.contains('primary-cta-button')) return;
+        // Skip mouse interactions on loading container elements
+        if (mouseUpEvent.target.closest('.loading-container') || 
+            mouseUpEvent.target.classList.contains('loading-spinner') ||
+            mouseUpEvent.target.closest('.loader-message')) {
+            return;
+        }
         resumeVideoOnUserRelease();
     });
 </script>
