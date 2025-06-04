@@ -4,13 +4,13 @@
 <stl_head>
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y64KN37S5"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8E107VXMTL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-2Y64KN37S5');
+  gtag('config', 'G-8E107VXMTL');
 </script>
 
 <script language="JavaScript" type="text/javascript" src="<tag:jssource />"></script>
@@ -667,6 +667,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     const progressSegment = document.getElementById('progressSegmentOne');
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
     
+    // GA4 Video Load Time Tracking
+    const loadStart = performance.now();
+    
     // Initialize progress bar
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
@@ -702,6 +705,22 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
     });
 
+    // GA4 Video Load Time Tracking
+    videoElement.addEventListener('loadeddata', function() {
+        const loadTime = Math.round(performance.now() - loadStart);
+        gtag('event', 'video_loaded', {
+            video_title: 'LifetimeValue_4.mp4',
+            load_time_ms: loadTime
+        });
+    });
+
+    // GA4 Video Completion Tracking
+    videoElement.addEventListener('ended', function() {
+        gtag('event', 'video_completed', {
+            video_title: 'LifetimeValue_4.mp4'
+        });
+    });
+
     videoElement.addEventListener('error', function() {
         const loadingContainer = document.getElementById('loadingContainer');
         if (loadingContainer) {
@@ -711,6 +730,15 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             }
         }
     });
+
+    // GA4 Time-on-Page Milestones
+    setTimeout(() => {
+        gtag('event', 'engagement_5s');
+    }, 5);
+
+    setTimeout(() => {
+        gtag('event', 'engagement_10s');
+    }, 10);
 
 
 
@@ -750,9 +778,19 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
     // Click handlers for CTA buttons
     document.addEventListener('click', (clickEvent) => {
-        if (clickEvent.target.classList.contains('primary-cta-button') || 
-            clickEvent.target.classList.contains('final-overlay-cta-button')) {
+        if (clickEvent.target.classList.contains('primary-cta-button')) {
             clickEvent.stopPropagation();
+            // GA4 Track Primary CTA Click
+            gtag('event', 'cta_click', {
+                button_position: 'top'
+            });
+            window.location.href = applicationDestinationUrl;
+        } else if (clickEvent.target.classList.contains('final-overlay-cta-button')) {
+            clickEvent.stopPropagation();
+            // GA4 Track Final CTA Click
+            gtag('event', 'cta_click', {
+                button_position: 'final'
+            });
             window.location.href = applicationDestinationUrl;
         }
     });
@@ -772,6 +810,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         
         // Swipe up always goes to destination URL
         if (verticalSwipeDistance < -verticalSwipeThreshold) {
+            // GA4 Track Swipe to Exit
+            gtag('event', 'swipe_to_exit', {
+                direction: 'vertical'
+            });
             window.location.href = applicationDestinationUrl;
             return;
         }
@@ -779,6 +821,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // On final screen, allow swipe left to go to URL
         if (finalOverlayScreen.classList.contains('is-active') && 
             horizontalSwipeDistance < -horizontalSwipeThreshold) {
+            // GA4 Track Swipe to Exit
+            gtag('event', 'swipe_to_exit', {
+                direction: 'left'
+            });
             window.location.href = applicationDestinationUrl;
         }
     }
@@ -793,6 +839,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         userTouchTimeout = setTimeout(() => {
             if (!videoElement.paused) {
                 videoElement.pause();
+                // GA4 Track Video Pause by User
+                gtag('event', 'video_paused_by_user');
             }
         }, 200); // 200ms delay to detect a hold
     }
