@@ -215,7 +215,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             padding: 12px 30px;
             font-size: 16px;
             z-index: 100;
-            background-color: rgba(49, 104, 52, 0.85);
+            background-color: rgba(25, 111, 207, 0.9);
             color: rgb(255, 255, 255);
             font-weight: bold;
             border-radius: 30px;
@@ -315,7 +315,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
 
         .final-overlay-cta-button {
-            background-color: rgba(49, 104, 52, 0.85);
+            background-color: rgba(25, 111, 207, 0.9);
             color: white;
             font-weight: bold;
             padding: 15px 40px;
@@ -429,9 +429,13 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 .final-overlay-title,
 .final-overlay-description,
 .final-overlay-cta-button {
-    animation: fadePulse 1.5s infinite;
+    animation: overlayHeartbeatPulse 1.5s infinite;
 }
 
+.final-overlay-description .b-text {
+    color: #FF6B35;
+    font-weight: bold;
+}
 
 /* Loader */
 
@@ -480,6 +484,72 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 .loader-message p:last-child {
     font-weight: 400;
     opacity: 0.9;
+}
+
+/* Tap to Play Styles */
+.tap-to-play-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.tap-to-play-container:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.play-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #000;
+    animation: playIconPulse 2s ease-in-out infinite;
+}
+
+.tap-to-play-message {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 250px;
+    line-height: 1.4;
+}
+
+.tap-to-play-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 5px;
+}
+
+@keyframes playIconPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
 }
 
 @keyframes spin {
@@ -584,22 +654,21 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             <div class="video-wrapper">
 
 
-                <!-- Loading  -->
-
-
-
                 <!-- Loading State -->
                 <div class="loading-container" id="loadingContainer">
                     <div class="loading-spinner"></div>
                     <div class="loader-message">
-                        <!-- <p>Just a moment... Your personalized content is loading.</p>
-                        <p>This one's picked just for you—totally worth the wait!</p> -->
+                        <p>Thank you for your interest in type 1 diabetes prevention options.</p>
+                        <p>Loading your personalized diabetes prevention information...</p>
+                    </div>
+                </div>
 
-                        <p>Thank you for clicking — this content is crafted with you in mind.</p>
-                        <p>Loading something meaningful… just a moment.</p>
-
-                        <!-- <p> Bringing your personalized content to the screen... </p>
-                        <p> Thanks for your patience — it’s almost here.</p> -->
+                <!-- Tap to Play State -->
+                <div class="tap-to-play-container" id="tapToPlayContainer">
+                    <div class="play-icon">▶</div>
+                    <div class="tap-to-play-message">
+                        Tap to Play Video
+                        <div class="tap-to-play-subtitle">Learn about FDA-approved type 1 diabetes delay treatment</div>
                     </div>
                 </div>
 
@@ -608,10 +677,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 
                 <!-- Video element -->
                 <video id="videoElementOne" class="video-element" preload="auto" muted playsinline autoplay>
-                    <source src="https://staticvideoshost.online/LifetimeValue_4.mp4" type="video/mp4">
+                <source src="https://staticvideoshost.online/Tzield.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button class="primary-cta-button"> Search Now → </button>
+                <button class="primary-cta-button"> How TZIELD Can Help → </button>
             </div>
         </div>
     </div>
@@ -620,14 +689,14 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     <div class="final-overlay-screen" id="finalOverlayScreen">
         <div class="final-overlay-content">
             <div class="final-overlay-title">
-                Search Obituaries by Name
+                <span class="b-text">Protect Your Future</span> from Type 1 Diabetes
             </div>
             <div class="final-overlay-description">
-                Our platform makes locating people's obituaries easier than ever, whether your search is personal or professional
+                Take control before symptoms appear. <span class="b-text">TZIELD</span> is FDA-approved treatment to delay stage 3 type 1 diabetes in at-risk individuals aged 8 and older.
             </div>
              <a href="<ad_href_url:1 />" target="_blank" class="main-anchor mobileAnchor">
               <button class="final-overlay-cta-button">
-                Start Your Search Now →
+                Sign Up Today → 
               </button>
             </a>
         </div>
@@ -666,63 +735,168 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     const videoElement = document.querySelector('.video-element');
     const progressSegment = document.getElementById('progressSegmentOne');
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const tapToPlayContainer = document.getElementById('tapToPlayContainer');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
+    
+    // Video timing tracking variables
+    let videoStartTime = null;
+    let tapToPlayShownTime = null;
+    let finalScreenShownTime = null;
+    
+    // Autoplay detection variables
+    let autoplayTimeout;
+    let videoPlayAttempted = false;
+    let videoActuallyPlaying = false;
     
     // Initialize progress bar
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
     
-    // Start the video
-    videoElement.play();
-
-    /* change for cta button  */
-    
-    // Show CTA button when video starts playing
-    videoElement.addEventListener('playing', function() {
-        const ctaButton = document.querySelector('.primary-cta-button');
-        // loading
-        const loadingContainer = document.getElementById('loadingContainer');    
-        if (ctaButton) {
-            ctaButton.style.display = 'block';
+    // Function to attempt video play
+    function attemptVideoPlay() {
+        if (videoPlayAttempted) return;
+        videoPlayAttempted = true;
+        
+        const playPromise = videoElement.play();
+        
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    // Video started successfully
+                    // console.log("Video autoplay successful");
+                })
+                .catch(error => {
+                    // Autoplay failed
+                    // console.log("Video autoplay failed:", error);
+                    showTapToPlay();
+                });
         }
-        // loading
+        
+        // Set timeout to detect if video doesn't start playing within 3 seconds
+        autoplayTimeout = setTimeout(() => {
+            if (!videoActuallyPlaying) {
+                console.log("Video didn't start playing within timeout");
+                showTapToPlay();
+            }
+        }, 4000);
+    }
+    
+    // Function to show "Tap to Play" UI
+    function showTapToPlay() {
         if (loadingContainer) {
             loadingContainer.style.display = 'none';
         }
+        if (tapToPlayContainer) {
+            tapToPlayContainer.style.display = 'flex';
+        }
+        
+        // Record when tap-to-play screen is shown
+        tapToPlayShownTime = performance.now();
+        const timeFromPageLoad = Math.round(tapToPlayShownTime - loadStart);
+        
+        // GA4 Track when tap-to-play screen is shown with enhanced data
+        gtag('event', 'tap_to_play_screen_shown', {
+            video_title: 'Tzield.mp4',
+            interaction_required: true,
+            time_from_page_load_ms: timeFromPageLoad,
+            autoplay_failed: true
+        });
+    }
+    
+    // Function to hide all loading/tap UI and start video
+    function startVideoPlayback() {
+        if (loadingContainer) {
+            loadingContainer.style.display = 'none';
+        }
+        if (tapToPlayContainer) {
+            tapToPlayContainer.style.display = 'none';
+        }
+        
+        // Clear any existing timeout
+        if (autoplayTimeout) {
+            clearTimeout(autoplayTimeout);
+        }
+        
+        // Play video if not already playing
+        if (videoElement.paused) {
+            const playPromise = videoElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Manual play failed:", error);
+                });
+            }
+        }
+        
+        // Note: CTA button will be shown when 'playing' event fires, not here
         animateProgressSegment();
-    });
-
-
-    // loading
-
-    // Add loading state handling
+    }
+    
+    // Video event handlers
     videoElement.addEventListener('loadstart', function() {
-        const loadingContainer = document.getElementById('loadingContainer');
         if (loadingContainer) {
             loadingContainer.style.display = 'flex';
         }
+        if (tapToPlayContainer) {
+            tapToPlayContainer.style.display = 'none';
+        }
     });
-
+    
+    videoElement.addEventListener('canplay', function() {
+        // Try to play video when it's ready
+        attemptVideoPlay();
+    });
+    
     // GA4 Video Load Time Tracking
     videoElement.addEventListener('loadeddata', function() {
         const loadTime = Math.round(performance.now() - loadStart);
         gtag('event', 'video_loaded', {
-            video_title: 'LifetimeValue_4.mp4',
+            video_title: 'Tzield.mp4',
             load_time_ms: loadTime
         });
     });
-
+    
+    videoElement.addEventListener('playing', function() {
+        videoActuallyPlaying = true;
+        // console.log("Video is now playing");
+        
+        // Record video start time for timing calculations
+        if (videoStartTime === null) {
+            videoStartTime = performance.now();
+        }
+        
+        // Clear timeout since video is playing
+        if (autoplayTimeout) {
+            clearTimeout(autoplayTimeout);
+        }
+        
+        // Hide loading/tap UI
+        if (loadingContainer) {
+            loadingContainer.style.display = 'none';
+        }
+        if (tapToPlayContainer) {
+            tapToPlayContainer.style.display = 'none';
+        }
+        
+        // Show CTA button only when video is actually playing
+        const ctaButton = document.querySelector('.primary-cta-button');
+        if (ctaButton) {
+            ctaButton.style.display = 'block';
+        }
+        
+        animateProgressSegment();
+    });
+    
     // GA4 Video Completion Tracking
     videoElement.addEventListener('ended', function() {
         gtag('event', 'video_completed', {
-            video_title: 'LifetimeValue_4.mp4'
+            video_title: 'Tzield.mp4'
         });
     });
-
+    
     videoElement.addEventListener('error', function() {
-        const loadingContainer = document.getElementById('loadingContainer');
         if (loadingContainer) {
             const loaderMessage = loadingContainer.querySelector('.loader-message');
             if (loaderMessage) {
@@ -730,22 +904,30 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             }
         }
     });
-
+    
+    // Tap to Play click handler
+    if (tapToPlayContainer) {
+        tapToPlayContainer.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Tap to play clicked");
+            startVideoPlayback();
+        });
+    }
+    
     // GA4 Time-on-Page Milestones
     setTimeout(() => {
         gtag('event', 'engagement_5s');
-    }, 5);
+    }, 5000);
 
     setTimeout(() => {
         gtag('event', 'engagement_10s');
-    }, 10);
-
-
-
-
-
-
+    }, 10000);
     
+    // Initialize video
+    attemptVideoPlay();
+    
+    // Additional video functionality
     function updateProgressSegment() {
         const progressPercentage = (videoElement.currentTime / videoElement.duration) * 100;
         progressSegment.style.width = `${progressPercentage}%`;
@@ -754,6 +936,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     function displayFinalOverlayScreen() {
         storySlide.classList.add('is-active');
         videoElement.muted = true;
+        
+        // Record when final screen is shown
+        finalScreenShownTime = performance.now();
         
         // Add a small delay before showing the overlay for smoother transition
         setTimeout(() => {
@@ -780,16 +965,39 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('click', (clickEvent) => {
         if (clickEvent.target.classList.contains('primary-cta-button')) {
             clickEvent.stopPropagation();
-            // GA4 Track Primary CTA Click
+            
+            // Calculate timing data
+            const currentTime = performance.now();
+            const timeFromVideoStart = videoStartTime ? Math.round(currentTime - videoStartTime) : null;
+            const videoCurrentTime = Math.round(videoElement.currentTime * 1000); // Convert to ms
+            const isVideoPlaying = !videoElement.paused && !videoElement.ended;
+            
+            // GA4 Track Primary CTA Click with enhanced timing data
             gtag('event', 'cta_click', {
-                button_position: 'top'
+                button_position: 'top',
+                time_from_video_start_ms: timeFromVideoStart,
+                video_current_time_ms: videoCurrentTime,
+                video_is_playing: isVideoPlaying,
+                video_duration_ms: Math.round(videoElement.duration * 1000)
             });
             window.location.href = applicationDestinationUrl;
         } else if (clickEvent.target.classList.contains('final-overlay-cta-button')) {
             clickEvent.stopPropagation();
-            // GA4 Track Final CTA Click
+            
+            // Calculate timing data
+            const currentTime = performance.now();
+            const timeFromVideoStart = videoStartTime ? Math.round(currentTime - videoStartTime) : null;
+            const timeFromFinalScreen = finalScreenShownTime ? Math.round(currentTime - finalScreenShownTime) : null;
+            const videoCurrentTime = Math.round(videoElement.currentTime * 1000); // Convert to ms
+            
+            // GA4 Track Final CTA Click with enhanced timing data
             gtag('event', 'cta_click', {
-                button_position: 'final'
+                button_position: 'final',
+                time_from_video_start_ms: timeFromVideoStart,
+                time_from_final_screen_ms: timeFromFinalScreen,
+                video_current_time_ms: videoCurrentTime,
+                video_is_playing: false, // Final screen means video ended
+                video_duration_ms: Math.round(videoElement.duration * 1000)
             });
             window.location.href = applicationDestinationUrl;
         }
@@ -808,11 +1016,26 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         const horizontalSwipeDistance = touchEndXPosition - touchStartXPosition;
         const verticalSwipeDistance = touchEndYPosition - touchStartYPosition;
         
+        // Calculate timing and context data
+        const currentTime = performance.now();
+        const timeFromVideoStart = videoStartTime ? Math.round(currentTime - videoStartTime) : null;
+        const timeFromFinalScreen = finalScreenShownTime ? Math.round(currentTime - finalScreenShownTime) : null;
+        const videoCurrentTime = Math.round(videoElement.currentTime * 1000); // Convert to ms
+        const isVideoPlaying = !videoElement.paused && !videoElement.ended;
+        const isOnFinalScreen = finalOverlayScreen.classList.contains('is-active');
+        
         // Swipe up always goes to destination URL
         if (verticalSwipeDistance < -verticalSwipeThreshold) {
-            // GA4 Track Swipe to Exit
+            // GA4 Track Swipe to Exit with enhanced data
             gtag('event', 'swipe_to_exit', {
-                direction: 'vertical'
+                direction: 'vertical',
+                time_from_video_start_ms: timeFromVideoStart,
+                time_from_final_screen_ms: timeFromFinalScreen,
+                video_current_time_ms: videoCurrentTime,
+                video_is_playing: isVideoPlaying,
+                is_on_final_screen: isOnFinalScreen,
+                video_duration_ms: Math.round(videoElement.duration * 1000),
+                swipe_context: isOnFinalScreen ? 'final_screen' : 'video_screen'
             });
             window.location.href = applicationDestinationUrl;
             return;
@@ -821,28 +1044,38 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // On final screen, allow swipe left to go to URL
         if (finalOverlayScreen.classList.contains('is-active') && 
             horizontalSwipeDistance < -horizontalSwipeThreshold) {
-            // GA4 Track Swipe to Exit
+            // GA4 Track Swipe to Exit with enhanced data
             gtag('event', 'swipe_to_exit', {
-                direction: 'left'
+                direction: 'left',
+                time_from_video_start_ms: timeFromVideoStart,
+                time_from_final_screen_ms: timeFromFinalScreen,
+                video_current_time_ms: videoCurrentTime,
+                video_is_playing: false, // Always false on final screen
+                is_on_final_screen: true,
+                video_duration_ms: Math.round(videoElement.duration * 1000),
+                swipe_context: 'final_screen'
             });
             window.location.href = applicationDestinationUrl;
         }
     }
     
-    // Insert working logic from serp.html, adapted for serp_new.html
+    // Video pause/resume on touch (only when video is actually playing)
     let userTouchTimeout = null;
 
     function pauseVideoOnUserHold() {
-        // Clear any existing timeout to prevent multiple pauses
-        if (userTouchTimeout) clearTimeout(userTouchTimeout);
-        // Set a small timeout to differentiate between tap and hold
-        userTouchTimeout = setTimeout(() => {
-            if (!videoElement.paused) {
-                videoElement.pause();
-                // GA4 Track Video Pause by User
-                gtag('event', 'video_paused_by_user');
-            }
-        }, 200); // 200ms delay to detect a hold
+        // Only pause if video is actually playing and not in tap-to-play state
+        if (videoActuallyPlaying && tapToPlayContainer.style.display !== 'flex') {
+            // Clear any existing timeout to prevent multiple pauses
+            if (userTouchTimeout) clearTimeout(userTouchTimeout);
+            // Set a small timeout to differentiate between tap and hold
+            userTouchTimeout = setTimeout(() => {
+                if (!videoElement.paused) {
+                    videoElement.pause();
+                    // GA4 Track Video Pause by User
+                    gtag('event', 'video_paused_by_user');
+                }
+            }, 200); // 200ms delay to detect a hold
+        }
     }
 
     function resumeVideoOnUserRelease() {
@@ -854,12 +1087,15 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if(finalOverlayScreen.classList.contains('is-active')){
             return;
         }
-        try {
-            videoElement.play().catch(error => {
-                console.log("Error resuming video:", error);
-            });
-        } catch (error) {
-            console.log("Error trying to play video:", error);
+        // Only resume if video was already playing
+        if (videoActuallyPlaying && videoElement.paused) {
+            try {
+                videoElement.play().catch(error => {
+                    console.log("Error resuming video:", error);
+                });
+            } catch (error) {
+                console.log("Error trying to play video:", error);
+            }
         }
     }
 
@@ -874,8 +1110,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchStartEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
-        // Skip touch interactions on loading container elements
+        // Skip touch interactions on loading/tap to play elements
         if (touchStartEvent.target.closest('.loading-container') || 
+            touchStartEvent.target.closest('.tap-to-play-container') ||
             touchStartEvent.target.classList.contains('loading-spinner') ||
             touchStartEvent.target.closest('.loader-message')) {
             return;
@@ -896,8 +1133,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchEndEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
-        // Skip touch interactions on loading container elements
+        // Skip touch interactions on loading/tap to play elements
         if (touchEndEvent.target.closest('.loading-container') || 
+            touchEndEvent.target.closest('.tap-to-play-container') ||
             touchEndEvent.target.classList.contains('loading-spinner') ||
             touchEndEvent.target.closest('.loader-message')) {
             return;
@@ -911,8 +1149,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('mousedown', mouseDownEvent => {
         // Skip if the click was on the CTA button
         if (mouseDownEvent.target.classList.contains('primary-cta-button')) return;
-        // Skip mouse interactions on loading container elements
+        // Skip mouse interactions on loading/tap to play elements
         if (mouseDownEvent.target.closest('.loading-container') || 
+            mouseDownEvent.target.closest('.tap-to-play-container') ||
             mouseDownEvent.target.classList.contains('loading-spinner') ||
             mouseDownEvent.target.closest('.loader-message')) {
             return;
@@ -923,8 +1162,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('mouseup', mouseUpEvent => {
         // Skip if the click was on the CTA button
         if (mouseUpEvent.target.classList.contains('primary-cta-button')) return;
-        // Skip mouse interactions on loading container elements
+        // Skip mouse interactions on loading/tap to play elements
         if (mouseUpEvent.target.closest('.loading-container') || 
+            mouseUpEvent.target.closest('.tap-to-play-container') ||
             mouseUpEvent.target.classList.contains('loading-spinner') ||
             mouseUpEvent.target.closest('.loader-message')) {
             return;
