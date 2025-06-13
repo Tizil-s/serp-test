@@ -786,6 +786,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     // console.log("Video autoplay successful");
                 })
                 .catch(error => {
+                    if (loadingContainer) loadingContainer.style.display = 'none';
+
                     // Autoplay failed
                     // console.log("Video autoplay failed:", error);
                     showTapToPlay();
