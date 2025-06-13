@@ -786,7 +786,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     // console.log("Video autoplay successful");
                 })
                 .catch(error => {
-                    if (loadingContainer) loadingContainer.style.display = 'none';
 
                     // Autoplay failed
                     // console.log("Video autoplay failed:", error);
@@ -795,12 +794,12 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
         
         // Set timeout to detect if video doesn't start playing within 4 seconds
-        autoplayTimeout = setTimeout(() => {
-            if (!videoActuallyPlaying) {
-                console.log("Video didn't start playing within timeout");
-                showTapToPlay();
-            }
-        }, 4000);
+        // autoplayTimeout = setTimeout(() => {
+        //     if (!videoActuallyPlaying) {
+        //         console.log("Video didn't start playing within timeout");
+        //         showTapToPlay();
+        //     }
+        // }, 4000);
     }
     
     // Function to show "Tap to Play" UI
