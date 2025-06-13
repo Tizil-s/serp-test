@@ -453,6 +453,13 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     align-items: center;
     gap: 15px;
     z-index: 2;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.loading-container.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .loading-spinner {
@@ -876,16 +883,32 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // Video event handlers
     videoElement.addEventListener('loadstart', function() {
-        if (loadingContainer) {
-            loadingContainer.style.display = 'flex';
-        }
-        if (tapToPlayContainer) {
-            tapToPlayContainer.style.display = 'none';
+        // Only show loader if video isn't already playing or ready
+        if (videoElement.readyState < 3) { // HAVE_FUTURE_DATA
+            if (loadingContainer) {
+                loadingContainer.style.display = 'flex';
+                loadingContainer.classList.remove('hidden');
+            }
+            if (tapToPlayContainer) {
+                tapToPlayContainer.style.display = 'none';
+            }
         }
     });
     
     videoElement.addEventListener('canplay', function() {
         // Try to play video when it's ready
+        attemptVideoPlay();
+    });
+    
+    // Add canplaythrough event for better mobile handling
+    videoElement.addEventListener('canplaythrough', function() {
+        // Video is fully loaded and can play through without buffering
+        if (loadingContainer) {
+            loadingContainer.classList.add('hidden');
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+            }, 300);
+        }
         attemptVideoPlay();
     });
     
@@ -897,6 +920,14 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             video_loaded: true,
             campaign: campaign
         });
+        
+        // Hide loader immediately when data is loaded
+        if (loadingContainer) {
+            loadingContainer.classList.add('hidden');
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+            }, 300);
+        }
     });
     
     videoElement.addEventListener('playing', function() {
@@ -913,9 +944,12 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             clearTimeout(autoplayTimeout);
         }
         
-        // Hide loading/tap UI
+        // Hide loading/tap UI immediately when playing starts
         if (loadingContainer) {
-            loadingContainer.style.display = 'none';
+            loadingContainer.classList.add('hidden');
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+            }, 300);
         }
         if (tapToPlayContainer) {
             tapToPlayContainer.style.display = 'none';
