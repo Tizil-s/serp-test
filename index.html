@@ -559,6 +559,50 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
 }
 
+/* Music Control Button Styles */
+.music-control-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.music-control-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+.music-control-button:active {
+    transform: scale(0.95);
+}
+
+.music-icon {
+    font-size: 16px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.music-control-button.muted .music-icon {
+    opacity: 0.7;
+}
+
+.music-control-button:not(.muted) .music-icon {
+    opacity: 1;
+}
+
 </style>
 <script>
     function getUrlParameter(name) {
@@ -693,6 +737,11 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     Your browser does not support the audio element.
                 </audio>
                 
+                <!-- Music Control Button -->
+                <button id="musicControlButton" class="music-control-button" title="Toggle Background Music">
+                    <span class="music-icon">🔇</span>
+                </button>
+                
                 <button class="primary-cta-button"> Book My Visit →</button>
             </div>
         </div>
@@ -751,6 +800,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
     const loadingContainer = document.getElementById('loadingContainer');
     const tapToPlayContainer = document.getElementById('tapToPlayContainer');
+    const musicControlButton = document.getElementById('musicControlButton');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
@@ -770,6 +820,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // User interaction tracking for audio
     let userHasInteracted = false;
+    
+    // Music control variables
+    let backgroundMusicMuted = true;
     
     // Animation frame tracking
     let animationFrameId = null;
@@ -997,6 +1050,54 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         });
     }
     
+    // Music Control Functionality
+    function toggleBackgroundMusic() {
+        if (!backgroundMusic) return;
+        
+        if (backgroundMusicMuted) {
+            // Unmute and play music
+            backgroundMusic.volume = 0.5; // Set volume to 50%
+            backgroundMusic.play().then(() => {
+                backgroundMusicMuted = false;
+                updateMusicButtonState();
+                console.log("Background music started");
+            }).catch(error => {
+                console.log("Background music play failed:", error);
+            });
+        } else {
+            // Mute and pause music
+            backgroundMusic.pause();
+            backgroundMusicMuted = true;
+            updateMusicButtonState();
+            console.log("Background music paused");
+        }
+    }
+    
+    function updateMusicButtonState() {
+        if (!musicControlButton) return;
+        
+        const musicIcon = musicControlButton.querySelector('.music-icon');
+        if (backgroundMusicMuted) {
+            musicIcon.textContent = '🔇';
+            musicControlButton.classList.add('muted');
+        } else {
+            musicIcon.textContent = '🔊';
+            musicControlButton.classList.remove('muted');
+        }
+    }
+    
+    // Music control button click handler
+    if (musicControlButton) {
+        musicControlButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleBackgroundMusic();
+        });
+        
+        // Initialize button state
+        updateMusicButtonState();
+    }
+    
     // GA4 Time-on-Page Milestones
     setTimeout(() => {
         gtag('event', 'engagement_5s', {
@@ -1014,30 +1115,35 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     attemptVideoPlay();
     
     // Add click event listener to entire screen area to start video
-    const storiesContainer = document.querySelector('.stories-main-container');
-    if (storiesContainer) {
-        storiesContainer.addEventListener('click', function(e) {
-            // Skip if click is on CTA button or final overlay elements
-            if (e.target.classList.contains('primary-cta-button') || 
-                e.target.classList.contains('final-overlay-cta-button') ||
-                e.target.classList.contains('final-overlay-title') ||
-                e.target.classList.contains('final-overlay-description') ||
-                e.target.closest('.final-overlay-content')) {
-                return;
-            }
+    // const storiesContainer = document.querySelector('.stories-main-container');
+    // if (storiesContainer) {
+    //     storiesContainer.addEventListener('click', function(e) {
+    //         // Skip if click is on CTA button or final overlay elements
+    //         if (e.target.classList.contains('primary-cta-button') || 
+    //             e.target.classList.contains('final-overlay-cta-button') ||
+    //             e.target.classList.contains('final-overlay-title') ||
+    //             e.target.classList.contains('final-overlay-description') ||
+    //             e.target.closest('.final-overlay-content')) {
+    //             return;
+    //         }
             
-            // Skip if click is on loading/tap to play elements
-            if (e.target.closest('.loading-container') || 
-                e.target.closest('.tap-to-play-container') ||
-                e.target.classList.contains('loading-spinner') ||
-                e.target.closest('.loader-message')) {
-                return;
-            }
+    //         // Skip if click is on loading/tap to play elements
+    //         if (e.target.closest('.loading-container') || 
+    //             e.target.closest('.tap-to-play-container') ||
+    //             e.target.classList.contains('loading-spinner') ||
+    //             e.target.closest('.loader-message')) {
+    //             return;
+    //         }
             
-            // Start video playback
-            startVideoPlayback();
-        });
-    }
+    //         // Skip if click is on music control button
+    //         if (e.target.closest('.music-control-button')) {
+    //             return;
+    //         }
+            
+    //         // Start video playback
+    //         startVideoPlayback();
+    //     });
+    // }
     
     // Additional video functionality
     function updateProgressSegment() {
