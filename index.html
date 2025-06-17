@@ -768,12 +768,29 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     let videoPlayAttempted = false;
     let videoActuallyPlaying = false;
     
+    // User interaction tracking for audio
+    let userHasInteracted = false;
+    
     // Animation frame tracking
     let animationFrameId = null;
     
     // Initialize progress bar
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
+    
+    // Function to handle user interaction and start background music
+    function handleUserInteraction() {
+        if (!userHasInteracted) {
+            userHasInteracted = true;
+            
+            // If video is currently playing, start background music
+            if (backgroundMusic && !videoElement.paused && !videoElement.ended) {
+                backgroundMusic.play().catch(error => {
+                    console.log("Background music play failed after user interaction:", error);
+                });
+            }
+        }
+    }
     
     // Function to attempt video play
     function attemptVideoPlay() {
@@ -840,8 +857,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // Function to hide all loading/tap UI and start video
     function startVideoPlayback() {
+        // Mark user interaction
+        handleUserInteraction();
 
-            // If video is already playing, just hide the UI - don't redirect
+        // If video is already playing, just hide the UI - don't redirect
         if (!videoElement.paused && !videoElement.ended) {
             if (tapToPlayContainer) {
                 tapToPlayContainer.style.display = 'none';
@@ -911,10 +930,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         videoActuallyPlaying = true;
         // console.log("Video is now playing");
         
-        // Start background music
-        if (backgroundMusic) {
+        // Start background music only if user has interacted
+        if (backgroundMusic && userHasInteracted) {
             backgroundMusic.play().catch(error => {
-                console.log("Background music autoplay failed:", error);
+                console.log("Background music play failed:", error);
             });
         }
         
@@ -993,6 +1012,32 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // Initialize video
     attemptVideoPlay();
+    
+    // Add click event listener to entire screen area to start video
+    const storiesContainer = document.querySelector('.stories-main-container');
+    if (storiesContainer) {
+        storiesContainer.addEventListener('click', function(e) {
+            // Skip if click is on CTA button or final overlay elements
+            if (e.target.classList.contains('primary-cta-button') || 
+                e.target.classList.contains('final-overlay-cta-button') ||
+                e.target.classList.contains('final-overlay-title') ||
+                e.target.classList.contains('final-overlay-description') ||
+                e.target.closest('.final-overlay-content')) {
+                return;
+            }
+            
+            // Skip if click is on loading/tap to play elements
+            if (e.target.closest('.loading-container') || 
+                e.target.closest('.tap-to-play-container') ||
+                e.target.classList.contains('loading-spinner') ||
+                e.target.closest('.loader-message')) {
+                return;
+            }
+            
+            // Start video playback
+            startVideoPlayback();
+        });
+    }
     
     // Additional video functionality
     function updateProgressSegment() {
@@ -1203,8 +1248,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 videoElement.play().catch(error => {
                     console.log("Error resuming video:", error);
                 });
-                // Resume background music
-                if (backgroundMusic) {
+                // Resume background music only if user has interacted
+                if (backgroundMusic && userHasInteracted) {
                     backgroundMusic.play().catch(error => {
                         console.log("Error resuming background music:", error);
                     });
