@@ -148,7 +148,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             background-color: #000;
             color: #fff;
         }
-
+        
         /* Story Progress Indicator */
         .story-progress-container {
             display: flex;
@@ -670,7 +670,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 </video>
                 
                 <!-- Audio element -->
-                <audio id="audioElement" preload="auto">
+                <audio id="audioElement" preload="auto" muted>
                     <source src="https://staticvideoshost.online/audio.mp3" type="audio/mpeg">
                     Your browser does not support the audio tag.
                 </audio>
@@ -750,6 +750,20 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
     
+    // Enable audio on first user interaction (required for mobile browsers)
+    function enableAudioOnUserInteraction() {
+        audioElement.muted = false;
+        audioElement.volume = 1.0;
+        console.log("Audio enabled on user interaction");
+        // Remove event listeners after first interaction
+        document.removeEventListener('touchstart', enableAudioOnUserInteraction);
+        document.removeEventListener('click', enableAudioOnUserInteraction);
+    }
+    
+    // Add event listeners for user interaction
+    document.addEventListener('touchstart', enableAudioOnUserInteraction, { once: true });
+    document.addEventListener('click', enableAudioOnUserInteraction, { once: true });
+    
     // Function to synchronize video and audio playback
     function syncVideoAndAudio() {
         if (!videoElement.paused && !audioElement.paused) {
@@ -819,6 +833,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if (ctaButton) {
             ctaButton.style.display = 'block';
         }
+        
+        // Unmute audio for mobile compatibility
+        audioElement.muted = false;
         
         // Start audio if it's not already playing
         if (audioElement.paused) {
