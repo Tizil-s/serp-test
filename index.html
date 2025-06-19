@@ -654,24 +654,14 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             <div class="video-wrapper">
 
 
-                <!-- Loading  -->
-
-
-
                 <!-- Loading State -->
-                <div class="loading-container" id="loadingContainer">
+                <!-- <div class="loading-container" id="loadingContainer">
                     <div class="loading-spinner"></div>
                     <div class="loader-message">
-                        <!-- <p>Just a moment... Your personalized content is loading.</p>
-                        <p>This one's picked just for you—totally worth the wait!</p> -->
-
                         <p>Thank you for clicking — this content is crafted with you in mind.</p>
                         <p>Loading something meaningful… just a moment.</p>
-                        
-                        <!-- <p> Bringing your personalized content to the screen... </p>
-                        <p> Thanks for your patience — it's almost here.</p> -->
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Video element -->
                 <video id="videoElementOne" class="video-element" preload="auto" muted playsinline controls>
@@ -741,7 +731,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     const audioElement = document.getElementById('audioElement');
     const progressSegment = document.getElementById('progressSegmentOne');
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
-    const loadingContainer = document.getElementById('loadingContainer');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
@@ -802,16 +791,11 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // Video event handlers
     videoElement.addEventListener('loadstart', function() {
-        if (loadingContainer) {
-            loadingContainer.style.display = 'flex';
-        }
+        // Video loading started
     });
     
     videoElement.addEventListener('canplay', function() {
-        // Hide loading when video is ready to play
-        if (loadingContainer) {
-            loadingContainer.style.display = 'none';
-        }
+        // Video is ready to play
     });
     
     // GA4 Video Load Time Tracking
@@ -828,11 +812,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // Record video start time for timing calculations
         if (videoStartTime === null) {
             videoStartTime = performance.now();
-        }
-        
-        // Hide loading/tap UI
-        if (loadingContainer) {
-            loadingContainer.style.display = 'none';
         }
         
         // Show CTA button when video starts playing
@@ -891,12 +870,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     });
     
     videoElement.addEventListener('error', function() {
-        if (loadingContainer) {
-            const loaderMessage = loadingContainer.querySelector('.loader-message');
-            if (loaderMessage) {
-                loaderMessage.innerHTML = '<p>Error loading video. Please try again.</p>';
-            }
-        }
+        console.log("Video error occurred");
     });
     
     // GA4 Time-on-Page Milestones
@@ -955,13 +929,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
         animationFrameId = requestAnimationFrame(animationStep);
     }
-
-    videoElement.addEventListener('timeupdate', function() {
-        if (!finalOverlayScreen.classList.contains('is-active') && 
-            this.currentTime >= this.duration * 0.90) {
-            displayFinalOverlayScreen();
-        }
-    });
 
     // Click handlers for CTA buttons
     document.addEventListener('click', (clickEvent) => {
@@ -1076,18 +1043,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     let userTouchTimeout = null;
 
     function pauseVideoOnUserHold() {
-        // Don't pause if tap-to-play is visible OR if video isn't actually playing yet
-        if (!videoActuallyPlaying) {
-            return;
-        }
-        
-        // Additional safety check: don't pause if we're still in loading/tap-to-play state
-        if (tapToPlayContainer && tapToPlayContainer.style.display === 'flex') {
-            return;
-        }
-        
         // Only pause if video is actually playing
-        if (videoActuallyPlaying && !videoElement.paused) {
+        if (!videoElement.paused && !videoElement.ended) {
             // Clear any existing timeout to prevent multiple pauses
             if (userTouchTimeout) clearTimeout(userTouchTimeout);
             // Set a small timeout to differentiate between tap and hold
@@ -1112,8 +1069,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if(finalOverlayScreen.classList.contains('is-active')){
             return;
         }
-        // Only resume if video was already playing
-        if (videoActuallyPlaying && videoElement.paused) {
+        // Only resume if video was paused
+        if (videoElement.paused && !videoElement.ended) {
             try {
                 videoElement.play().catch(error => {
                     console.log("Error resuming video:", error);
@@ -1135,11 +1092,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchStartEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
-        // Skip touch interactions on loading/tap to play elements
-        if (touchStartEvent.target.closest('.loading-container') || 
-            touchStartEvent.target.closest('.tap-to-play-container') ||
-            touchStartEvent.target.classList.contains('loading-spinner') ||
-            touchStartEvent.target.closest('.loader-message')) {
+        // Skip touch interactions on video controls
+        if (touchStartEvent.target.closest('video') || 
+            touchStartEvent.target.tagName === 'VIDEO') {
             return;
         }
         touchStartXPosition = touchStartEvent.changedTouches[0].screenX;
@@ -1158,11 +1113,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             touchEndEvent.target.classList.contains('final-overlay-description')) {
             return;
         }
-        // Skip touch interactions on loading/tap to play elements
-        if (touchEndEvent.target.closest('.loading-container') || 
-            touchEndEvent.target.closest('.tap-to-play-container') ||
-            touchEndEvent.target.classList.contains('loading-spinner') ||
-            touchEndEvent.target.closest('.loader-message')) {
+        // Skip touch interactions on video controls
+        if (touchEndEvent.target.closest('video') || 
+            touchEndEvent.target.tagName === 'VIDEO') {
             return;
         }
 
@@ -1175,11 +1128,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('mousedown', mouseDownEvent => {
         // Skip if the click was on the CTA button
         if (mouseDownEvent.target.classList.contains('primary-cta-button')) return;
-        // Skip mouse interactions on loading/tap to play elements
-        if (mouseDownEvent.target.closest('.loading-container') || 
-            mouseDownEvent.target.closest('.tap-to-play-container') ||
-            mouseDownEvent.target.classList.contains('loading-spinner') ||
-            mouseDownEvent.target.closest('.loader-message')) {
+        // Skip mouse interactions on video controls
+        if (mouseDownEvent.target.closest('video') || 
+            mouseDownEvent.target.tagName === 'VIDEO') {
             return;
         }
         pauseVideoOnUserHold();
@@ -1188,11 +1139,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     document.addEventListener('mouseup', mouseUpEvent => {
         // Skip if the click was on the CTA button
         if (mouseUpEvent.target.classList.contains('primary-cta-button')) return;
-        // Skip mouse interactions on loading/tap to play elements
-        if (mouseUpEvent.target.closest('.loading-container') || 
-            mouseUpEvent.target.closest('.tap-to-play-container') ||
-            mouseUpEvent.target.classList.contains('loading-spinner') ||
-            mouseUpEvent.target.closest('.loader-message')) {
+        // Skip mouse interactions on video controls
+        if (mouseUpEvent.target.closest('video') || 
+            mouseUpEvent.target.tagName === 'VIDEO') {
             return;
         }
         resumeVideoOnUserRelease();
