@@ -215,7 +215,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             padding: 12px 30px;
             font-size: 16px;
             z-index: 100;
-            background-color: rgba(75, 85, 165, 0.9);
+            background-color: rgba(222, 68, 16, 0.85);
             color: rgb(255, 255, 255);
             font-weight: bold;
             border-radius: 30px;
@@ -315,7 +315,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
 
         .final-overlay-cta-button {
-            background-color: rgba(75, 85, 165, 0.9);
+            background-color: rgba(222, 68, 16, 0.85);
             color: white;
             font-weight: bold;
             padding: 15px 40px;
@@ -432,9 +432,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     animation: overlayHeartbeatPulse 1.5s infinite;
 }
 
-.final-overlay-title .b-text,
 .final-overlay-description .b-text {
-    color: rgb(244, 155, 155);
+    color: #ff3b3b;
     font-weight: bold;
 }
 
@@ -559,50 +558,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
 }
 
-/* Music Control Button Styles */
-.music-control-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.music-control-button:hover {
-    background: rgba(0, 0, 0, 0.8);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: scale(1.1);
-}
-
-.music-control-button:active {
-    transform: scale(0.95);
-}
-
-.music-icon {
-    font-size: 16px;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.music-control-button.muted .music-icon {
-    opacity: 0.7;
-}
-
-.music-control-button:not(.muted) .music-icon {
-    opacity: 1;
-}
-
 </style>
 <script>
     function getUrlParameter(name) {
@@ -707,42 +662,30 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 <div class="loading-container" id="loadingContainer">
                     <div class="loading-spinner"></div>
                     <div class="loader-message">
+                        <!-- <p>Just a moment... Your personalized content is loading.</p>
+                        <p>This one's picked just for you—totally worth the wait!</p> -->
+
+                        <p>Thank you for clicking — this content is crafted with you in mind.</p>
+                        <p>Loading something meaningful… just a moment.</p>
                         
-                        <p>Thank you for your interest in eczema treatment options.</p>
-                        <p>Loading your personalized healthcare information...</p>
+                        <!-- <p> Bringing your personalized content to the screen... </p>
+                        <p> Thanks for your patience — it's almost here.</p> -->
                     </div>
                 </div>
 
-                <!-- Tap to Play State -->
-                <div class="tap-to-play-container" id="tapToPlayContainer">
-                    <div class="play-icon">▶</div>
-                    <div class="tap-to-play-message">
-                        Tap to Play Video
-                        <div class="tap-to-play-subtitle">Learn about FDA-approved eczema treatment</div>
-                    </div>
-                </div>
-
-
-
-                
                 <!-- Video element -->
-                <video id="videoElementOne" class="video-element" preload="auto" playsinline controls>
-                    <source src="https://staticvideoshost.online/Opzelura%20AD_2.mp4" type="video/mp4">
+                <video id="videoElementOne" class="video-element" preload="auto" muted playsinline controls>
+                    <source src="https://staticvideoshost.online/Blood%20Pressure_15.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 
-                <!-- Background Music -->
-                <audio id="backgroundMusic" preload="auto" loop>
+                <!-- Audio element -->
+                <audio id="audioElement" preload="auto">
                     <source src="https://staticvideoshost.online/audio.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
+                    Your browser does not support the audio tag.
                 </audio>
                 
-                <!-- Music Control Button -->
-                <button id="musicControlButton" class="music-control-button" title="Toggle Background Music">
-                    <span class="music-icon">🔇</span>
-                </button>
-                
-                <button class="primary-cta-button"> Book My Visit →</button>
+                <button class="primary-cta-button"> Watch Full Video → </button>
             </div>
         </div>
     </div>
@@ -751,14 +694,14 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     <div class="final-overlay-screen" id="finalOverlayScreen">
         <div class="final-overlay-content">
             <div class="final-overlay-title">
-                Take <span class="b-text">Control</span> of Your Eczema Today
+                Hello, I'm Dr. Marlene Merritt
             </div>
             <div class="final-overlay-description">
-                Discover how <span class="b-text">FDA-approved treatments</span> are helping thousands find lasting relief from eczema symptoms
+                The underlying problem of <span class="b-text">HIGH BLOOD PRESSURE</span> can be corrected with a simple solution
             </div>
              <a href="<ad_href_url:1 />" target="_blank" class="main-anchor mobileAnchor">
               <button class="final-overlay-cta-button">
-                Book My Visit → 
+                Continue Watching → 
               </button>
             </a>
         </div>
@@ -795,12 +738,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     // Story functionality
     const storySlide = document.querySelector('.story-slide');
     const videoElement = document.querySelector('.video-element');
-    const backgroundMusic = document.getElementById('backgroundMusic');
+    const audioElement = document.getElementById('audioElement');
     const progressSegment = document.getElementById('progressSegmentOne');
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
     const loadingContainer = document.getElementById('loadingContainer');
-    const tapToPlayContainer = document.getElementById('tapToPlayContainer');
-    const musicControlButton = document.getElementById('musicControlButton');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
@@ -811,18 +752,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     let finalScreenShownTime = null;
     
     // Campaign tracking variable
-    const campaign = 'opzelura_ad_video_campaign';
-    
-    // Autoplay detection variables
-    let autoplayTimeout;
-    let videoPlayAttempted = false;
-    let videoActuallyPlaying = false;
-    
-    // User interaction tracking for audio
-    let userHasInteracted = false;
-    
-    // Music control variables
-    let backgroundMusicMuted = true;
+    const campaign = 'blood_pressure_video_campaign';
     
     // Animation frame tracking
     let animationFrameId = null;
@@ -831,127 +761,43 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
     
-    // Function to handle user interaction and start background music
-    function handleUserInteraction() {
-        if (!userHasInteracted) {
-            userHasInteracted = true;
-            
-            // If video is currently playing, start background music
-            if (backgroundMusic && !videoElement.paused && !videoElement.ended) {
-                backgroundMusic.play().catch(error => {
-                    console.log("Background music play failed after user interaction:", error);
-                });
+    // Function to synchronize video and audio playback
+    function syncVideoAndAudio() {
+        if (!videoElement.paused && !audioElement.paused) {
+            // Both are playing, keep them in sync
+            const timeDiff = Math.abs(videoElement.currentTime - audioElement.currentTime);
+            if (timeDiff > 0.1) { // If difference is more than 100ms, sync them
+                audioElement.currentTime = videoElement.currentTime;
             }
         }
     }
     
-    // Function to attempt video play
-    function attemptVideoPlay() {
-        if (videoPlayAttempted) return;
-        videoPlayAttempted = true;
-        
-        const playPromise = videoElement.play();
-
-        // Clear any existing timeout before setting new one
-        if (autoplayTimeout) {
-            clearTimeout(autoplayTimeout);
-        }
-        
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    // Video started successfully
-                    // console.log("Video autoplay successful");
-                })
-                .catch(error => {
-                    // Autoplay failed
-                    // console.log("Video autoplay failed:", error);
-                    showTapToPlay();
-                });
-        }
-        
-        // Set timeout to detect if video doesn't start playing within 4 seconds
-        autoplayTimeout = setTimeout(() => {
-            if (!videoActuallyPlaying) {
-                console.log("Video didn't start playing within timeout");
-                showTapToPlay();
-            }
-        }, 4000);
-    }
-    
-    // Function to show "Tap to Play" UI
-    function showTapToPlay() {
-        // If video is already playing OR we know it's actually playing, don't show tap-to-play
-        if (videoActuallyPlaying || (!videoElement.paused && !videoElement.ended)) {
-            if (tapToPlayContainer) tapToPlayContainer.style.display = 'none';
-            if (loadingContainer) loadingContainer.style.display = 'none';
-            return;
-        }
-
-        if (loadingContainer) {
-            loadingContainer.style.display = 'none';
-        }
-        if (tapToPlayContainer) {
-            tapToPlayContainer.style.display = 'flex';
-        }
-
-        // Record when tap-to-play screen is shown
-        tapToPlayShownTime = performance.now();
-        const timeFromPageLoad = Math.round(tapToPlayShownTime - loadStart);
-        
-        // GA4 Track when tap-to-play screen is shown with enhanced data
-        gtag('event', 'tap_to_play_screen_shown', {
-            interaction_required: true,
-            time_from_page_load_ms: timeFromPageLoad,
-            autoplay_failed: true,
-            campaign: campaign
-        });
-    }
-    
-    // Function to hide all loading/tap UI and start video
-    function startVideoPlayback() {
-        // Mark user interaction
-        handleUserInteraction();
-
-        // If video is already playing, just hide the UI - don't redirect
-        if (!videoElement.paused && !videoElement.ended) {
-            if (tapToPlayContainer) {
-                tapToPlayContainer.style.display = 'none';
-            }
-            if (loadingContainer) {
-                loadingContainer.style.display = 'none';
-            }
-            const ctaButton = document.querySelector('.primary-cta-button');
-            if (ctaButton) {
-                ctaButton.style.display = 'block';
-            }
-            return; // Don't proceed with play logic
-        }
-
-        if (loadingContainer) {
-            loadingContainer.style.display = 'none';
-        }
-        if (tapToPlayContainer) {
-            tapToPlayContainer.style.display = 'none';
-        }
-        
-        // Clear any existing timeout
-        if (autoplayTimeout) {
-            clearTimeout(autoplayTimeout);
-        }
-        
-        // Play video if not already playing
+    // Function to start video and audio playback
+    function startVideoAndAudioPlayback() {
         if (videoElement.paused) {
             const playPromise = videoElement.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Manual play failed:", error);
+                playPromise.then(() => {
+                    // Video started successfully, now start audio
+                    audioElement.currentTime = videoElement.currentTime;
+                    audioElement.play().catch(error => {
+                        console.log("Audio play failed:", error);
+                    });
+                }).catch(error => {
+                    console.log("Video play failed:", error);
                 });
             }
         }
-        
-        // Note: CTA button will be shown when 'playing' event fires, not here
-        animateProgressSegment();
+    }
+    
+    // Function to pause video and audio playback
+    function pauseVideoAndAudioPlayback() {
+        if (!videoElement.paused) {
+            videoElement.pause();
+        }
+        if (!audioElement.paused) {
+            audioElement.pause();
+        }
     }
     
     // Video event handlers
@@ -959,14 +805,13 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if (loadingContainer) {
             loadingContainer.style.display = 'flex';
         }
-        if (tapToPlayContainer) {
-            tapToPlayContainer.style.display = 'none';
-        }
     });
     
     videoElement.addEventListener('canplay', function() {
-        // Try to play video when it's ready
-        attemptVideoPlay();
+        // Hide loading when video is ready to play
+        if (loadingContainer) {
+            loadingContainer.style.display = 'none';
+        }
     });
     
     // GA4 Video Load Time Tracking
@@ -979,50 +824,64 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         });
     });
     
-    videoElement.addEventListener('playing', function() {
-        videoActuallyPlaying = true;
-        // console.log("Video is now playing");
-        
-        // Start background music only if user has interacted
-        if (backgroundMusic && userHasInteracted) {
-            backgroundMusic.play().catch(error => {
-                console.log("Background music play failed:", error);
-            });
-        }
-        
+    videoElement.addEventListener('play', function() {
         // Record video start time for timing calculations
         if (videoStartTime === null) {
             videoStartTime = performance.now();
-        }
-        
-        // Clear timeout since video is playing
-        if (autoplayTimeout) {
-            clearTimeout(autoplayTimeout);
         }
         
         // Hide loading/tap UI
         if (loadingContainer) {
             loadingContainer.style.display = 'none';
         }
-        if (tapToPlayContainer) {
-            tapToPlayContainer.style.display = 'none';
-        }
         
-        // Show CTA button only when video is actually playing
+        // Show CTA button when video starts playing
         const ctaButton = document.querySelector('.primary-cta-button');
         if (ctaButton) {
             ctaButton.style.display = 'block';
         }
         
+        // Start audio if it's not already playing
+        if (audioElement.paused) {
+            audioElement.currentTime = videoElement.currentTime;
+            audioElement.play().catch(error => {
+                console.log("Audio play failed:", error);
+            });
+        }
+        
         animateProgressSegment();
+    });
+    
+    videoElement.addEventListener('pause', function() {
+        // Pause audio when video is paused
+        if (!audioElement.paused) {
+            audioElement.pause();
+        }
+    });
+    
+    videoElement.addEventListener('seeking', function() {
+        // Sync audio when video is seeking
+        if (!audioElement.paused) {
+            audioElement.currentTime = videoElement.currentTime;
+        }
+    });
+    
+    // Sync video and audio during playback
+    videoElement.addEventListener('timeupdate', function() {
+        syncVideoAndAudio();
+        
+        // Check if video is ending
+        if (!finalOverlayScreen.classList.contains('is-active') && 
+            this.currentTime >= this.duration * 0.90) {
+            displayFinalOverlayScreen();
+        }
     });
     
     // GA4 Video Completion Tracking
     videoElement.addEventListener('ended', function() {
-        // Stop background music
-        if (backgroundMusic) {
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
+        // Stop audio when video ends
+        if (!audioElement.paused) {
+            audioElement.pause();
         }
         
         gtag('event', 'video_completed', {
@@ -1040,64 +899,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
     });
     
-    // Tap to Play click handler
-    if (tapToPlayContainer) {
-        tapToPlayContainer.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log("Tap to play clicked");
-            startVideoPlayback();
-        });
-    }
-    
-    // Music Control Functionality
-    function toggleBackgroundMusic() {
-        if (!backgroundMusic) return;
-        
-        if (backgroundMusicMuted) {
-            // Unmute and play music
-            backgroundMusic.volume = 0.5; // Set volume to 50%
-            backgroundMusic.play().then(() => {
-                backgroundMusicMuted = false;
-                updateMusicButtonState();
-                console.log("Background music started");
-            }).catch(error => {
-                console.log("Background music play failed:", error);
-            });
-        } else {
-            // Mute and pause music
-            backgroundMusic.pause();
-            backgroundMusicMuted = true;
-            updateMusicButtonState();
-            console.log("Background music paused");
-        }
-    }
-    
-    function updateMusicButtonState() {
-        if (!musicControlButton) return;
-        
-        const musicIcon = musicControlButton.querySelector('.music-icon');
-        if (backgroundMusicMuted) {
-            musicIcon.textContent = '🔇';
-            musicControlButton.classList.add('muted');
-        } else {
-            musicIcon.textContent = '🔊';
-            musicControlButton.classList.remove('muted');
-        }
-    }
-    
-    // Music control button click handler
-    if (musicControlButton) {
-        musicControlButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleBackgroundMusic();
-        });
-        
-        // Initialize button state
-        updateMusicButtonState();
-    }
-    
     // GA4 Time-on-Page Milestones
     setTimeout(() => {
         gtag('event', 'engagement_5s', {
@@ -1111,40 +912,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         });
     }, 10000);
     
-    // Initialize video
-    attemptVideoPlay();
-    
-    // Add click event listener to entire screen area to start video
-    // const storiesContainer = document.querySelector('.stories-main-container');
-    // if (storiesContainer) {
-    //     storiesContainer.addEventListener('click', function(e) {
-    //         // Skip if click is on CTA button or final overlay elements
-    //         if (e.target.classList.contains('primary-cta-button') || 
-    //             e.target.classList.contains('final-overlay-cta-button') ||
-    //             e.target.classList.contains('final-overlay-title') ||
-    //             e.target.classList.contains('final-overlay-description') ||
-    //             e.target.closest('.final-overlay-content')) {
-    //             return;
-    //         }
-            
-    //         // Skip if click is on loading/tap to play elements
-    //         if (e.target.closest('.loading-container') || 
-    //             e.target.closest('.tap-to-play-container') ||
-    //             e.target.classList.contains('loading-spinner') ||
-    //             e.target.closest('.loader-message')) {
-    //             return;
-    //         }
-            
-    //         // Skip if click is on music control button
-    //         if (e.target.closest('.music-control-button')) {
-    //             return;
-    //         }
-            
-    //         // Start video playback
-    //         startVideoPlayback();
-    //     });
-    // }
-    
     // Additional video functionality
     function updateProgressSegment() {
         const progressPercentage = (videoElement.currentTime / videoElement.duration) * 100;
@@ -1154,12 +921,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     function displayFinalOverlayScreen() {
         storySlide.classList.add('is-active');
         videoElement.muted = true;
-        
-        // Stop background music
-        if (backgroundMusic) {
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
-        }
         
         // Stop progress animation
         if (animationFrameId) {
@@ -1197,14 +958,16 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
     videoElement.addEventListener('timeupdate', function() {
         if (!finalOverlayScreen.classList.contains('is-active') && 
-            this.currentTime >= this.duration * 0.99) {
+            this.currentTime >= this.duration * 0.90) {
             displayFinalOverlayScreen();
         }
     });
 
     // Click handlers for CTA buttons
     document.addEventListener('click', (clickEvent) => {
+
         if (clickEvent.target.classList.contains('primary-cta-button')) {
+
             clickEvent.stopPropagation();
             
             // Calculate timing data
@@ -1224,6 +987,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             });
             window.location.href = applicationDestinationUrl;
         } else if (clickEvent.target.classList.contains('final-overlay-cta-button')) {
+
             clickEvent.stopPropagation();
             
             // Calculate timing data
@@ -1269,6 +1033,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         
         // Swipe up always goes to destination URL
         if (verticalSwipeDistance < -verticalSwipeThreshold) {
+
+
             // GA4 Track Swipe to Exit with enhanced data
             gtag('event', 'swipe_to_exit', {
                 direction: 'vertical',
@@ -1288,6 +1054,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // On final screen, allow swipe left to go to URL
         if (finalOverlayScreen.classList.contains('is-active') && 
             horizontalSwipeDistance < -horizontalSwipeThreshold) {
+
+
             // GA4 Track Swipe to Exit with enhanced data
             gtag('event', 'swipe_to_exit', {
                 direction: 'left',
@@ -1326,10 +1094,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             userTouchTimeout = setTimeout(() => {
                 if (!videoElement.paused) {
                     videoElement.pause();
-                    // Pause background music
-                    if (backgroundMusic) {
-                        backgroundMusic.pause();
-                    }
                     // GA4 Track Video Pause by User
                     gtag('event', 'video_paused_by_user', {
                         campaign: campaign
@@ -1354,12 +1118,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 videoElement.play().catch(error => {
                     console.log("Error resuming video:", error);
                 });
-                // Resume background music only if user has interacted
-                if (backgroundMusic && userHasInteracted) {
-                    backgroundMusic.play().catch(error => {
-                        console.log("Error resuming background music:", error);
-                    });
-                }
             } catch (error) {
                 console.log("Error trying to play video:", error);
             }
