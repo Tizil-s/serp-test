@@ -215,7 +215,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             padding: 12px 30px;
             font-size: 16px;
             z-index: 100;
-            background-color: #003454;
+            background-color: #144633;
             color: rgb(255, 255, 255);
             font-weight: bold;
             border-radius: 30px;
@@ -233,11 +233,58 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             display: none; /* Hide button initially */
         }
 
+        /* Unmute Button */
+        .unmute-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 0;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .unmute-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .unmute-button:active {
+            transform: scale(0.95);
+        }
+
+        .unmute-button.muted {
+            opacity: 0.7;
+        }
+
+        .unmute-button.unmuted {
+            opacity: 1;
+        }
+
         @media (max-height: 600px) {
             .primary-cta-button {
                 bottom: 20px; /* Fixed distance for smaller height screens */
                 padding: 8px 20px;
                 font-size: 14px;
+            }
+            
+            .unmute-button {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
             }
         }
         
@@ -315,7 +362,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
 
         .final-overlay-cta-button {
-            background-color: #003454;
+            background-color: #144633;
             color: white;
             font-weight: bold;
             padding: 15px 40px;
@@ -429,10 +476,15 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 .final-overlay-title,
 .final-overlay-description,
 .final-overlay-cta-button {
-    animation: fadePulse 1.5s infinite;
+    animation: overlayHeartbeatPulse 1.5s infinite;
 }
 
-
+.final-overlay-title .b-text,
+.final-overlay-description .b-text {
+    color: #E1E8A5;
+    font-weight: bold;
+}
+ 
 /* Loader */
 
 
@@ -493,7 +545,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     align-items: center;
     gap: 20px;
     z-index: 3;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
     padding: 30px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
@@ -536,11 +588,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     text-align: center;
     margin-top: 5px;
 }
-.bg-img {position: absolute; width: 100%; height: 100%; left: 0; top: 0; filter: blur(10px); transform: scale(1.6); z-index: 1;}
-   .front-img{
-       position: relative;
-       z-index: 10;
-   }
+
 @keyframes playIconPulse {
     0%, 100% {
         transform: scale(1);
@@ -555,6 +603,141 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* Video Overlay Elements */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 150;
+    display: none;
+}
+
+/* Floating Shapes */
+.floating-shape {
+    position: absolute;
+    opacity: 0.8;
+}
+
+.shape-1 {
+    width: 100%;
+    height: 70%;
+    background: #10382a;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.shape-2 {
+    width: 100%;
+    height: 45%;
+    background: #10382a;
+    bottom: 5%;
+    right: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.shape-3 {
+   display: none;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-20px) rotate(120deg);
+    }
+    66% {
+        transform: translateY(10px) rotate(240deg);
+    }
+}
+
+/* Text Elements */
+.overlay-text {
+    position: absolute;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+.text-1 {
+    top: 20%;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.text-2 {
+    bottom: 25%;
+    width: 100%;
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+}
+
+.text-3 {
+   display: none;
+}
+
+.highlight-text {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #E1E8A5;
+}
+
+.sub-text {
+    display: block;
+    font-size: 22px;
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+@keyframes textFadeInOut {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments for overlay elements */
+@media (max-width: 768px) {
+    .floating-shape {
+        transform: scale(0.7);
+    }
+    
+    .highlight-text {
+        font-size: 30px;
+    }
+    
+    .sub-text {
+        font-size: 15px;
+    }
+    
+    .text-1 {
+        top: 10%;
+    }
+    
+    .text-2 {
+        bottom: 20%;
+        right: 5%;
+    }
+    
+    .text-3 {
+        bottom: 25%;
+        left: 5%;
     }
 }
 
@@ -583,16 +766,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     const imageWrapElement = document.querySelector('.image_wrap');
                     if (imageWrapElement) { // Check if element exists
                         imageWrapElement.style.backgroundImage = `url('${imageUrl}')`;
-                        imageWrapElement.style.backgroundSize = 'contain';
+                        imageWrapElement.style.backgroundSize = 'cover';
                         imageWrapElement.style.backgroundPosition = 'center';
                         imageWrapElement.style.backgroundRepeat = 'no-repeat';
-                    }
-                    const bgWrapElement = document.querySelector('.bg-img');
-                    if (bgWrapElement) { // Check if element exists
-                        bgWrapElement.style.backgroundImage = `url('${imageUrl}')`;
-                        bgWrapElement.style.backgroundSize = 'contain';
-                        bgWrapElement.style.backgroundPosition = 'center';
-                        bgWrapElement.style.backgroundRepeat = 'no-repeat';
                     }
                 }
             } catch (e) {
@@ -621,8 +797,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             <div class="parentContainer">
             <div class="top_wrap">
                 <a href="<ad_href_url:1 />" target="_blank" class="main-anchor img_anchor">
-                    <div class="bg-img"></div>
-                    <div class="image_wrap desktop_img front-img"></div>
+                    <div class="image_wrap desktop_img"></div>
                     <customtag:adClickUrl1 data-type="boolean" />
                 </a>
             </div>
@@ -670,14 +845,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 <div class="loading-container" id="loadingContainer">
                     <div class="loading-spinner"></div>
                     <div class="loader-message">
-                        <!-- <p>Just a moment... Your personalized content is loading.</p>
-                        <p>This one's picked just for you—totally worth the wait!</p> -->
-
-                        <p>Thank you for clicking — this content is crafted with you in mind.</p>
-                        <p>Loading something meaningful… just a moment.</p>
-                        
-                        <!-- <p> Bringing your personalized content to the screen... </p>
-                        <p> Thanks for your patience — it's almost here.</p> -->
+                        <p>Thank you for your interest in dementia care resources.</p>
+                        <p>Loading your personalized information about Alzheimer's support...</p>
                     </div>
                 </div>
 
@@ -686,19 +855,42 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     <div class="play-icon">▶</div>
                     <div class="tap-to-play-message">
                         Tap to Play Video
-                        <!-- <div class="tap-to-play-subtitle">Your personalized content is ready</div> -->
+                        <div class="tap-to-play-subtitle">Learn about dementia care and support options</div>
                     </div>
                 </div>
 
+                <!-- Unmute Button -->
+                <button class="unmute-button muted" id="unmuteButton" title="Click to unmute">
+                    <svg class="mute-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                </button>
 
+                <!-- Video Overlay Elements -->
+                <div class="video-overlay" id="videoOverlay">
+                    <!-- Floating Shapes -->
+                    <!-- <div class="floating-shape shape-1"></div>
+                    <div class="floating-shape shape-2"></div> -->
+                    
+                    <!-- Text Elements -->
+                    <div class="overlay-text text-1">
+                        <span class="highlight-text">Is Your Loved One </span>
+                        <span class="sub-text">Acting Out in Unusual Ways?</span>
+                    </div>
+                    
+                    <div class="overlay-text text-2">
+                        <span class="highlight-text">Agitation from Dementia</span>
+                        <span class="sub-text">due to Alzheimer's disease may be the cause.</span>
+                    </div>
+                </div>
 
                 
                 <!-- Video element -->
-                <video id="videoElementOne" class="video-element" preload="auto" playsinline autoplay>
-                    <source src="https://staticvideoshost.online/ETFs_Funds_Stocks.mp4" type="video/mp4">
+                <video id="videoElementOne" class="video-element" preload="auto" playsinline autoplay muted>
+                    <source src="https://staticvideoshost.online/Rexulti%20ADD_3.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button class="primary-cta-button"> Take the Quiz → </button>
+                <button class="primary-cta-button"> Take the Questionnaire → </button>
             </div>
         </div>
     </div>
@@ -707,18 +899,18 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     <div class="final-overlay-screen" id="finalOverlayScreen">
         <div class="final-overlay-content">
             <div class="final-overlay-title">
-                SmartAsset
+                Facing <span class="b-text">Agitation from Dementia?</span>
             </div>
             <div class="final-overlay-description">
-                The Right Funds, The Right Plan | Starting With a Free Match
+                Learn how to support your loved one. <span class="b-text">Understanding starts with a simple step.</span>
             </div>
-             <a href="<ad_href_url:1 />" target="_blank" class="main-anchor mobileAnchor">
-              <button class="final-overlay-cta-button">
-                Take the Quiz →
-              </button>
+            <a href="<ad_href_url:1 />" target="_blank" class="main-anchor mobileAnchor">
+                <button class="final-overlay-cta-button">
+                    Take the Symptom Questionnaire →
+                </button>
             </a>
         </div>
-    </div>
+    </div>    
           </div>
     </if:ad_present1>
     </div>
@@ -755,6 +947,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
     const loadingContainer = document.getElementById('loadingContainer');
     const tapToPlayContainer = document.getElementById('tapToPlayContainer');
+    const unmuteButton = document.getElementById('unmuteButton');
+    const videoOverlay = document.getElementById('videoOverlay');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
@@ -765,7 +959,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     let finalScreenShownTime = null;
     
     // Campaign tracking variable
-    const campaign = 'ETFs_Funds_Stocks_campaign';
+    const campaign = 'rexulti_aad_video_campaign';
     
     // Autoplay detection variables
     let autoplayTimeout;
@@ -894,6 +1088,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if (tapToPlayContainer) {
             tapToPlayContainer.style.display = 'none';
         }
+        if (unmuteButton) {
+            unmuteButton.style.display = 'none';
+        }
     });
     
     videoElement.addEventListener('canplay', function() {
@@ -919,7 +1116,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         if (videoStartTime === null) {
             videoStartTime = performance.now();
         }
-        
+
         // Clear timeout since video is playing
         if (autoplayTimeout) {
             clearTimeout(autoplayTimeout);
@@ -939,15 +1136,40 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             ctaButton.style.display = 'block';
         }
         
+        // Show unmute button when video is playing
+        if (unmuteButton) {
+            unmuteButton.style.display = 'flex';
+        }
+        
+        // Show video overlay elements when video is playing
+        if (videoOverlay) {
+            videoOverlay.style.display = 'block';
+        }
+        
         animateProgressSegment();
     });
     
     // GA4 Video Completion Tracking
     videoElement.addEventListener('ended', function() {
+        // Hide video overlay when video ends
+        if (videoOverlay) {
+            videoOverlay.style.display = 'none';
+        }
+        
         gtag('event', 'video_completed', {
             video_completed: true,
             campaign: campaign
         });
+    });
+    
+    // Video pause event
+    videoElement.addEventListener('pause', function() {
+        // pauseOverlayAnimations();
+    });
+    
+    // Video play event
+    videoElement.addEventListener('play', function() {
+        // resumeOverlayAnimations();
     });
     
     videoElement.addEventListener('error', function() {
@@ -969,6 +1191,48 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         });
     }
     
+    // Unmute button click handler
+    if (unmuteButton) {
+        unmuteButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (videoElement.muted) {
+                // Unmute the video
+                videoElement.muted = false;
+                unmuteButton.innerHTML = `
+                    <svg class="mute-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                `;
+                unmuteButton.classList.remove('muted');
+                unmuteButton.classList.add('unmuted');
+                unmuteButton.title = 'Click to mute';
+                
+                // GA4 Track unmute action
+                gtag('event', 'video_unmuted', {
+                    campaign: campaign
+                });
+            } else {
+                // Mute the video
+                videoElement.muted = true;
+                unmuteButton.innerHTML = `
+                    <svg class="mute-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                `;
+                unmuteButton.classList.remove('unmuted');
+                unmuteButton.classList.add('muted');
+                unmuteButton.title = 'Click to unmute';
+                
+                // GA4 Track mute action
+                gtag('event', 'video_muted', {
+                    campaign: campaign
+                });
+            }
+        });
+    }
+    
     // GA4 Time-on-Page Milestones
     setTimeout(() => {
         gtag('event', 'engagement_5s', {
@@ -981,10 +1245,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             campaign: campaign
         });
     }, 10000);
-
+    
     // Initialize video
     attemptVideoPlay();
-
+    
     // Additional video functionality
     function updateProgressSegment() {
         const progressPercentage = (videoElement.currentTime / videoElement.duration) * 100;
@@ -993,11 +1257,22 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     function displayFinalOverlayScreen() {
         storySlide.classList.add('is-active');
+        videoElement.muted = true;
         
         // Stop progress animation
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
             animationFrameId = null;
+        }
+        
+        // Hide unmute button on final screen
+        if (unmuteButton) {
+            unmuteButton.style.display = 'none';
+        }
+        
+        // Hide video overlay on final screen
+        if (videoOverlay) {
+            videoOverlay.style.display = 'none';
         }
         
         // Record when final screen is shown
@@ -1010,7 +1285,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
     
     function animateProgressSegment() {
-            // Cancel existing animation before starting new one
+        // Cancel existing animation before starting new one
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
         }
@@ -1187,6 +1462,34 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 console.log("Error trying to play video:", error);
             }
         }
+    }
+
+    // Function to pause overlay animations
+    function pauseOverlayAnimations() {
+        const overlayTexts = document.querySelectorAll('.overlay-text');
+        const floatingShapes = document.querySelectorAll('.floating-shape');
+        
+        overlayTexts.forEach(text => {
+            text.classList.add('paused');
+        });
+        
+        floatingShapes.forEach(shape => {
+            shape.classList.add('paused');
+        });
+    }
+
+    // Function to resume overlay animations
+    function resumeOverlayAnimations() {
+        const overlayTexts = document.querySelectorAll('.overlay-text');
+        const floatingShapes = document.querySelectorAll('.floating-shape');
+        
+        overlayTexts.forEach(text => {
+            text.classList.remove('paused');
+        });
+        
+        floatingShapes.forEach(shape => {
+            shape.classList.remove('paused');
+        });
     }
 
     document.addEventListener('touchstart', touchStartEvent => {
