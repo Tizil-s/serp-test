@@ -215,7 +215,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             padding: 12px 30px;
             font-size: 16px;
             z-index: 100;
-            background-color: rgba(75, 85, 165, 0.9);
+            background-color: rgb(43, 71, 192);
             color: rgb(255, 255, 255);
             font-weight: bold;
             border-radius: 30px;
@@ -315,7 +315,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
 
         .final-overlay-cta-button {
-            background-color: rgba(75, 85, 165, 0.9);
+            background-color: rgb(43, 71, 192);
             color: white;
             font-weight: bold;
             padding: 15px 40px;
@@ -434,7 +434,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
 .final-overlay-title .b-text,
 .final-overlay-description .b-text {
-    color: rgb(244, 155, 155);
+    color: rgb(43, 71, 192);
     font-weight: bold;
 }
 
@@ -559,50 +559,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
 }
 
-/* Music Control Button Styles */
-.music-control-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.music-control-button:hover {
-    background: rgba(0, 0, 0, 0.8);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: scale(1.1);
-}
-
-.music-control-button:active {
-    transform: scale(0.95);
-}
-
-.music-icon {
-    font-size: 16px;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.music-control-button.muted .music-icon {
-    opacity: 0.7;
-}
-
-.music-control-button:not(.muted) .music-icon {
-    opacity: 1;
-}
-
 </style>
 <script>
     function getUrlParameter(name) {
@@ -708,8 +664,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     <div class="loading-spinner"></div>
                     <div class="loader-message">
                         
-                        <p>Thank you for your interest in eczema treatment options.</p>
-                        <p>Loading your personalized healthcare information...</p>
+                        <p>Thank you for clicking — this content is crafted with you in mind.</p>
+                        <p>Loading something meaningful… just a moment.</p>
+                        
                     </div>
                 </div>
 
@@ -718,7 +675,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                     <div class="play-icon">▶</div>
                     <div class="tap-to-play-message">
                         Tap to Play Video
-                        <div class="tap-to-play-subtitle">Learn about FDA-approved eczema treatment</div>
+                        <div class="tap-to-play-subtitle">Learn about smartasset management</div>
                     </div>
                 </div>
 
@@ -726,23 +683,12 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
                 
                 <!-- Video element -->
-                <video id="videoElementOne" class="video-element" preload="auto" muted playsinline autoplay>
-                    <source src="https://staticvideoshost.online/Opzelura%20AD_2.mp4" type="video/mp4">
+                <video id="videoElementOne" class="video-element" preload="auto" playsinline autoplay>
+                    <source src="https://staticvideoshost.online/ETFs_Funds_Stocks_1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 
-                <!-- Background Music -->
-                <audio id="backgroundMusic" preload="auto" loop>
-                    <source src="https://staticvideoshost.online/music.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                
-                <!-- Music Control Button -->
-                <button id="musicControlButton" class="music-control-button" title="Toggle Background Music">
-                    <span class="music-icon">🔇</span>
-                </button>
-                
-                <button class="primary-cta-button"> Book My Visit →</button>
+                <button class="primary-cta-button"> Take the Quiz →</button>
             </div>
         </div>
     </div>
@@ -751,14 +697,14 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     <div class="final-overlay-screen" id="finalOverlayScreen">
         <div class="final-overlay-content">
             <div class="final-overlay-title">
-                Take <span class="b-text">Control</span> of Your Eczema Today
+                <span class="b-text"> Smartasset </span> 
             </div>
             <div class="final-overlay-description">
-                Discover how <span class="b-text">FDA-approved treatments</span> are helping thousands find lasting relief from eczema symptoms
+                Make the most of retirement on you own terms
             </div>
              <a href="<ad_href_url:1 />" target="_blank" class="main-anchor mobileAnchor">
               <button class="final-overlay-cta-button">
-                Book My Visit → 
+                Take the Quiz → 
               </button>
             </a>
         </div>
@@ -795,12 +741,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     // Story functionality
     const storySlide = document.querySelector('.story-slide');
     const videoElement = document.querySelector('.video-element');
-    const backgroundMusic = document.getElementById('backgroundMusic');
     const progressSegment = document.getElementById('progressSegmentOne');
     const finalOverlayScreen = document.getElementById('finalOverlayScreen');
     const loadingContainer = document.getElementById('loadingContainer');
     const tapToPlayContainer = document.getElementById('tapToPlayContainer');
-    const musicControlButton = document.getElementById('musicControlButton');
     
     // GA4 Video Load Time Tracking
     const loadStart = performance.now();
@@ -821,9 +765,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     // User interaction tracking for audio
     let userHasInteracted = false;
     
-    // Music control variables
-    let backgroundMusicMuted = true;
-    
     // Animation frame tracking
     let animationFrameId = null;
     
@@ -835,13 +776,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     function handleUserInteraction() {
         if (!userHasInteracted) {
             userHasInteracted = true;
-            
-            // If video is currently playing, start background music
-            if (backgroundMusic && !videoElement.paused && !videoElement.ended) {
-                backgroundMusic.play().catch(error => {
-                    console.log("Background music play failed after user interaction:", error);
-                });
-            }
         }
     }
     
@@ -983,13 +917,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         videoActuallyPlaying = true;
         // console.log("Video is now playing");
         
-        // Start background music only if user has interacted
-        if (backgroundMusic && userHasInteracted) {
-            backgroundMusic.play().catch(error => {
-                console.log("Background music play failed:", error);
-            });
-        }
-        
         // Record video start time for timing calculations
         if (videoStartTime === null) {
             videoStartTime = performance.now();
@@ -1019,12 +946,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     
     // GA4 Video Completion Tracking
     videoElement.addEventListener('ended', function() {
-        // Stop background music
-        if (backgroundMusic) {
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
-        }
-        
         gtag('event', 'video_completed', {
             video_completed: true,
             campaign: campaign
@@ -1050,53 +971,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         });
     }
     
-    // Music Control Functionality
-    function toggleBackgroundMusic() {
-        if (!backgroundMusic) return;
-        
-        if (backgroundMusicMuted) {
-            // Unmute and play music
-            backgroundMusic.volume = 0.5; // Set volume to 50%
-            backgroundMusic.play().then(() => {
-                backgroundMusicMuted = false;
-                updateMusicButtonState();
-                console.log("Background music started");
-            }).catch(error => {
-                console.log("Background music play failed:", error);
-            });
-        } else {
-            // Mute and pause music
-            backgroundMusic.pause();
-            backgroundMusicMuted = true;
-            updateMusicButtonState();
-            console.log("Background music paused");
-        }
-    }
     
-    function updateMusicButtonState() {
-        if (!musicControlButton) return;
-        
-        const musicIcon = musicControlButton.querySelector('.music-icon');
-        if (backgroundMusicMuted) {
-            musicIcon.textContent = '🔇';
-            musicControlButton.classList.add('muted');
-        } else {
-            musicIcon.textContent = '🔊';
-            musicControlButton.classList.remove('muted');
-        }
-    }
-    
-    // Music control button click handler
-    if (musicControlButton) {
-        musicControlButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleBackgroundMusic();
-        });
-        
-        // Initialize button state
-        updateMusicButtonState();
-    }
     
     // GA4 Time-on-Page Milestones
     setTimeout(() => {
@@ -1154,12 +1029,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     function displayFinalOverlayScreen() {
         storySlide.classList.add('is-active');
         videoElement.muted = true;
-        
-        // Stop background music
-        if (backgroundMusic) {
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
-        }
         
         // Stop progress animation
         if (animationFrameId) {
@@ -1326,10 +1195,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             userTouchTimeout = setTimeout(() => {
                 if (!videoElement.paused) {
                     videoElement.pause();
-                    // Pause background music
-                    if (backgroundMusic) {
-                        backgroundMusic.pause();
-                    }
                     // GA4 Track Video Pause by User
                     gtag('event', 'video_paused_by_user', {
                         campaign: campaign
@@ -1354,12 +1219,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
                 videoElement.play().catch(error => {
                     console.log("Error resuming video:", error);
                 });
-                // Resume background music only if user has interacted
-                if (backgroundMusic && userHasInteracted) {
-                    backgroundMusic.play().catch(error => {
-                        console.log("Error resuming background music:", error);
-                    });
-                }
             } catch (error) {
                 console.log("Error trying to play video:", error);
             }
