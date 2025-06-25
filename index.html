@@ -959,8 +959,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             video_completed: true,
             campaign: campaign
         });
-        
-        // Show final overlay screen when video actually ends
+
         displayFinalOverlayScreen();
         
         // Update swipe hint text if final screen is active
@@ -1011,11 +1010,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
     
     function displayFinalOverlayScreen() {
-        // Check if final screen is already active to prevent duplicate displays
-        if (finalOverlayScreen.classList.contains('is-active')) {
-            return;
-        }
-        
         storySlide.classList.add('is-active');
         videoElement.muted = true;
         
@@ -1109,6 +1103,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         animationFrameId = requestAnimationFrame(animationStep);
     }
 
+
     // Click handlers for CTA buttons
     document.addEventListener('click', (clickEvent) => {
         if (clickEvent.target.classList.contains('primary-cta-button')) {
@@ -1158,6 +1153,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     let touchStartYPosition = 0;
     let touchEndXPosition = 0;
     let touchEndYPosition = 0;
+    let touchStartTime = 0;
+    let isTapGesture = false;
     
     function handleUserSwipeGesture() {
         const horizontalSwipeThreshold = 50;
@@ -1173,6 +1170,26 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         const videoCurrentTime = Math.round(videoElement.currentTime * 1000); // Convert to ms
         const isVideoPlaying = !videoElement.paused && !videoElement.ended;
         const isOnFinalScreen = finalOverlayScreen.classList.contains('is-active');
+        
+        // Check if this is a tap gesture (small movement and short duration)
+        const touchDuration = currentTime - touchStartTime;
+        const touchDistance = Math.sqrt(Math.pow(horizontalSwipeDistance, 2) + Math.pow(verticalSwipeDistance, 2));
+        
+        // If it's a tap gesture and video is playing, show final screen
+        if (touchDuration < 300 && touchDistance < 30 && isVideoPlaying && !isOnFinalScreen) {
+            // Show final overlay screen
+            displayFinalOverlayScreen();
+            
+            // GA4 Track Tap to Show Final Screen
+            gtag('event', 'tap_to_show_final_screen', {
+                time_from_video_start_ms: timeFromVideoStart,
+                video_current_time_ms: videoCurrentTime,
+                video_is_playing: isVideoPlaying,
+                video_duration_ms: Math.round(videoElement.duration * 1000),
+                campaign: campaign
+            });
+            return;
+        }
         
         // Swipe up shows final ad screen (if not already shown)
         if (verticalSwipeDistance < -verticalSwipeThreshold) {
@@ -1294,6 +1311,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
         touchStartXPosition = touchStartEvent.changedTouches[0].screenX;
         touchStartYPosition = touchStartEvent.changedTouches[0].screenY;
+        touchStartTime = performance.now();
         pauseVideoOnUserHold();
     });
 
