@@ -1298,10 +1298,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             return;
         }
         // Skip touch tracking on final screen text elements
-        if (touchStartEvent.target.classList.contains('final-overlay-title') || 
-            touchStartEvent.target.classList.contains('final-overlay-description')) {
-            return;
-        }
+        // if (touchStartEvent.target.classList.contains('final-overlay-title') || 
+        //     touchStartEvent.target.classList.contains('final-overlay-description')) {
+        //     return;
+        // }
         // Skip touch interactions on loading/tap to play elements
         if (touchStartEvent.target.closest('.loading-container') || 
             touchStartEvent.target.closest('.tap-to-play-container') ||
@@ -1322,10 +1322,10 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             return;
         }
         // Skip touch tracking on final screen text elements
-        if (touchEndEvent.target.classList.contains('final-overlay-title') || 
-            touchEndEvent.target.classList.contains('final-overlay-description')) {
-            return;
-        }
+        // if (touchEndEvent.target.classList.contains('final-overlay-title') || 
+        //     touchEndEvent.target.classList.contains('final-overlay-description')) {
+        //     return;
+        // }
         // Skip touch interactions on loading/tap to play elements
         if (touchEndEvent.target.closest('.loading-container') || 
             touchEndEvent.target.closest('.tap-to-play-container') ||
