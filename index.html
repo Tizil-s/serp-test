@@ -331,7 +331,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         
         .final-overlay-swipe-hint {
             position: absolute;
-            top: 30px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.8);
@@ -786,6 +786,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     // Animation frame tracking
     let animationFrameId = null;
     
+    // Flag to track if final overlay screen has been shown during current video session
+    let finalOverlayShownThisSession = false;
+    
     // Initialize progress bar
     progressSegment.style.width = '0%';
     progressSegment.style.transition = 'width 0.1s linear';
@@ -1025,6 +1028,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // Record when final screen is shown
         finalScreenShownTime = performance.now();
         
+        // Mark that final overlay has been shown this session
+        finalOverlayShownThisSession = true;
+        
         // Update swipe hint text based on video state
         updateSwipeHintText();
         
@@ -1056,6 +1062,8 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         // Check if video has ended - if so, restart from beginning
         if (videoElement.ended) {
             videoElement.currentTime = 0;
+            // Reset the flag when video is replayed from beginning
+            finalOverlayShownThisSession = false;
             videoElement.play().catch(error => {
                 console.log("Error replaying video:", error);
                 if (error.name === 'NotAllowedError') {
@@ -1103,6 +1111,7 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
 
     videoElement.addEventListener('timeupdate', function() {
         if (!finalOverlayScreen.classList.contains('is-active') && 
+            !finalOverlayShownThisSession &&
             this.currentTime >= this.duration * 0.99) {
             displayFinalOverlayScreen();
         }
