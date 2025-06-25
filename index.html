@@ -960,6 +960,9 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
             campaign: campaign
         });
         
+        // Show final overlay screen when video actually ends
+        displayFinalOverlayScreen();
+        
         // Update swipe hint text if final screen is active
         if (finalOverlayScreen.classList.contains('is-active')) {
             updateSwipeHintText();
@@ -1105,13 +1108,6 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
         }
         animationFrameId = requestAnimationFrame(animationStep);
     }
-
-    videoElement.addEventListener('timeupdate', function() {
-        if (!finalOverlayScreen.classList.contains('is-active') && 
-            this.currentTime >= this.duration * 0.99) {
-            displayFinalOverlayScreen();
-        }
-    });
 
     // Click handlers for CTA buttons
     document.addEventListener('click', (clickEvent) => {
