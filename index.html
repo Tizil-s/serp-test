@@ -1008,6 +1008,11 @@ li .content .arrow_wrap_inner .arrow_text.nxt{display: block;}
     }
     
     function displayFinalOverlayScreen() {
+        // Check if final screen is already active to prevent duplicate displays
+        if (finalOverlayScreen.classList.contains('is-active')) {
+            return;
+        }
+        
         storySlide.classList.add('is-active');
         videoElement.muted = true;
         
